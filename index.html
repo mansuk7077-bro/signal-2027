@@ -80,7 +80,17 @@
   .pill:hover{border-color:var(--accent);color:var(--ink);transform:translateY(-1px)}
   .pill.on{background:var(--ink);border-color:var(--ink);color:var(--bg)}
 
-  .ov{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+  .ov{display:flex;flex-direction:column;gap:20px}
+  .qtr{--q:var(--accent)}
+  .qtr.q1{--q:#2f6bed} .qtr.q2{--q:#17a673} .qtr.q3{--q:#e8843a} .qtr.q4{--q:#9a5cf0} .qtr.q0{--q:#6b7280}
+  .qtr-h{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 16px;border-radius:14px;margin-bottom:13px;background:color-mix(in srgb,var(--q) 11%,var(--surface));border:1px solid color-mix(in srgb,var(--q) 30%,var(--line))}
+  .qtr-l{display:flex;align-items:baseline;gap:9px;min-width:0}
+  .qtr-n{font-size:17px;font-weight:900;color:var(--q);letter-spacing:-.02em}
+  .qtr-mo{font-size:12px;color:var(--muted);font-weight:700}
+  .qtr-r{display:flex;align-items:baseline;gap:5px;white-space:nowrap}
+  .qtr-r b{font-size:22px;font-weight:900;color:var(--q);letter-spacing:-.02em}
+  .qtr-r span{font-size:11px;color:var(--muted);font-weight:700}
+  .qtr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
   .ovc{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:17px 18px 18px;box-shadow:var(--shadow);cursor:pointer;min-height:178px;display:flex;flex-direction:column;text-align:left;overflow:hidden;transition:transform .2s cubic-bezier(.2,.7,.2,1),box-shadow .2s,border-color .2s;animation:pop .5s both}
   .ovc::before{content:"";position:absolute;left:0;top:0;height:3px;width:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));transform:scaleX(0);transform-origin:left;transition:transform .22s}
   .ovc:hover{transform:translateY(-8px);border-color:transparent;box-shadow:var(--shadow-lg)}
@@ -88,7 +98,9 @@
   .ovc .m{font-size:23px;font-weight:900;letter-spacing:-.03em;display:flex;align-items:baseline;justify-content:space-between}
   .ovc .m .go{font-size:11px;color:var(--accent);font-weight:800;opacity:0;transform:translateX(-4px);transition:.18s}
   .ovc:hover .m .go{opacity:1;transform:none}
-  .ovc .rev{font-size:12.5px;color:var(--faint);font-weight:700;margin:6px 0 12px}
+  .ovc .rev{display:flex;align-items:baseline;gap:4px;margin:7px 0 12px}
+  .ovc .rev b{font-size:23px;font-weight:900;color:var(--q);letter-spacing:-.025em;line-height:1}
+  .ovc .rev span{font-size:11px;color:var(--faint);font-weight:700}
   .ovc ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px}
   .ovc li{font-size:14.5px;line-height:1.36;font-weight:600;color:var(--ink);padding-left:14px;position:relative}
   .ovc li::before{content:"";position:absolute;left:0;top:5px;width:5px;height:5px;border-radius:50%;background:var(--hi)}
@@ -242,8 +254,7 @@
   footer{border-top:1px solid var(--line);margin-top:28px;padding:32px 0 56px;color:var(--faint);font-size:12px}
   footer .disc{background:var(--bg-soft);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px;line-height:1.65;font-weight:500;max-width:900px}
 
-  @media (max-width:900px){.ov{grid-template-columns:repeat(3,1fr)}}
-  @media (max-width:560px){.ov{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:560px){.qtr-grid{grid-template-columns:1fr}.qtr-r b{font-size:19px}.qtr-n{font-size:15px}}
   @media (max-width:640px){.hero-title{font-size:22px} .ptitle b{font-size:26px} .pcard h4{font-size:16.5px}}
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
   :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
@@ -597,15 +608,23 @@ document.getElementById('heroRight').innerHTML=
   +`<div class="chip c-iss"><b class="num">${ANNUAL.iss}억</b><span>이슈</span></div>`
   +'<button class="themebtn" id="theme">◐ 테마</button>';
 
+function ovCard(mo,i){
+  const all=ISSUES.filter(x=>x.month===mo && (fReg==='all'||x.region.includes(fReg)) && catMatch(x));
+  let hi=all.filter(x=>x.impact==='상'); if(!hi.length)hi=all.filter(x=>x.impact==='중');
+  const show=hi.slice(0,3).map(x=>`<li class="${x.impact==='중'?'mid':''}">${x.title}</li>`).join('')||'<li class="mid" style="color:var(--faint)">주요 이슈 없음</li>';
+  const q=mo===0?0:Math.ceil(mo/3);
+  const rev=`<div class="rev"><b class="num">${monthTotal(mo)}</b><span>억 · 기대판매</span></div>`;
+  return `<button class="ovc q${q}" data-mo="${mo}" style="animation-delay:${i*22}ms"><div class="m"><span class="mm">${mlabel(mo)}</span><span class="go">›</span></div>${rev}<ul>${show}</ul><div class="cnt">전체 ${all.length}건 · 상세 보기</div></button>`;
+}
 function renderHome(){
-  document.getElementById('overview').innerHTML=MONS.map((mo,i)=>{
-    const all=ISSUES.filter(x=>x.month===mo && (fReg==='all'||x.region.includes(fReg)) && catMatch(x));
-    let hi=all.filter(x=>x.impact==='상'); if(!hi.length)hi=all.filter(x=>x.impact==='중');
-    const show=hi.slice(0,3).map(x=>`<li class="${x.impact==='중'?'mid':''}">${x.title}</li>`).join('')||'<li class="mid" style="color:var(--faint)">주요 이슈 없음</li>';
-    const rev=(mo>=1)?`<div class="rev num">기대판매 ${monthTotal(mo)}억</div>`:`<div class="rev num">상시·기간 이슈 ${monthTotal(0)}억</div>`;
-    const q=mo===0?0:Math.ceil(mo/3); const qlab=mo===0?'상시':q+'분기';
-    return `<button class="ovc q${q}" data-mo="${mo}" style="animation-delay:${i*28}ms"><div class="m"><span class="mm">${mlabel(mo)}</span><span class="qtag">${qlab}</span><span class="go">›</span></div>${rev}<ul>${show}</ul><div class="cnt">전체 ${all.length}건 · 상세 보기</div></button>`;
+  const qMeta=[[1,'1분기','1–3월',[1,2,3]],[2,'2분기','4–6월',[4,5,6]],[3,'3분기','7–9월',[7,8,9]],[4,'4분기','10–12월',[10,11,12]]];
+  let html=qMeta.map(([q,lab,mo3,ms])=>{
+    const qtot=Math.round(ms.reduce((a,m)=>a+monthTotal(m),0)*10)/10;
+    const cards=ms.map((m,j)=>ovCard(m,(q-1)*3+j)).join('');
+    return `<section class="qtr q${q}"><div class="qtr-h"><div class="qtr-l"><span class="qtr-n">${lab}</span><span class="qtr-mo">${mo3}</span></div><div class="qtr-r"><b class="num">${qtot}</b><span>억 · 분기 기대판매</span></div></div><div class="qtr-grid">${cards}</div></section>`;
   }).join('');
+  html+=`<section class="qtr q0"><div class="qtr-h"><div class="qtr-l"><span class="qtr-n">상시·기간</span><span class="qtr-mo">연중 상시 이슈</span></div><div class="qtr-r"><b class="num">${monthTotal(0)}</b><span>억 · 기대판매</span></div></div><div class="qtr-grid">${ovCard(0,12)}</div></section>`;
+  document.getElementById('overview').innerHTML=html;
 }
 document.getElementById('overview').addEventListener('click',e=>{const c=e.target.closest('.ovc');if(c)showMonth(Number(c.dataset.mo));});
 
