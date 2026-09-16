@@ -227,6 +227,16 @@
   .tip b{color:var(--accent-2);font-weight:800;display:block;margin-bottom:3px;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase}
   .tip::after{content:"";position:absolute;bottom:100%;left:22px;border:6px solid transparent;border-bottom-color:var(--ink)}
   .val:hover .tip,.val:focus .tip,.val:focus-within .tip{opacity:1;visibility:visible;transform:none}
+  .tip .ib{margin:1px 0 7px}
+  .tip .ib-row{display:flex;justify-content:space-between;gap:10px;align-items:baseline;padding:6px 0;border-bottom:1px solid color-mix(in srgb,var(--bg) 20%,transparent)}
+  .tip .ib-row:last-child{border-bottom:0}
+  .tip .ib-row>span{flex:1;font-size:11.5px;line-height:1.4;opacity:.92}
+  .tip .ib b{margin:0;letter-spacing:normal;text-transform:none;display:inline;color:inherit;font-size:13px;font-weight:800;flex:none}
+  .tip .ib-row.acc b{color:var(--accent-2);font-size:14px}
+  .tip .ib em{font-style:normal;font-weight:800;color:var(--accent-2)}
+  .tip .ib i{font-style:normal;opacity:.6;font-size:10.5px}
+  .tip .ib-note{font-size:10.5px;line-height:1.5;opacity:.72;font-weight:400}
+  .tip .ib-raw{font-size:11.5px;line-height:1.55}
   footer{border-top:1px solid var(--line);margin-top:28px;padding:32px 0 56px;color:var(--faint);font-size:12px}
   footer .disc{background:var(--bg-soft);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px;line-height:1.65;font-weight:500;max-width:900px}
 
@@ -393,6 +403,35 @@ function renderWedReport(mo){
   QT.tot=QT.wed.map((_,i)=>Math.round((QT.wed[i]+QT.mov[i]+QT.min[i])*10)/10);})();
 function fmt(n){return n.toLocaleString();}
 const wlRow=(n,op,sub,res,unit,cls='')=>`<div class="wl-row ${cls}"><span class="wl-n">${n}</span><div class="wl-l"><div class="wl-op">${op}</div><div class="wl-sub">${sub}</div></div><div class="wl-r">${res}<span>${unit}</span></div></div>`;
+function issueBasis(x){
+  const b=x.basis||''; if(x.value==null) return `<div class="ib-raw">${b||'—'}</div>`;
+  const pct=v=>Math.round(parseFloat(v)*100);
+  // A) 채널 2단계: 삼성브랜드 귀속 X억 × 채널캡처율 Y%
+  const mBase=b.match(/귀속\(기존\)\s*([\d.]+)\s*억/);
+  const mCap=b.match(/채널캡처율\s*([\d.]+)\s*%\s*(?:\(([^)]*)\))?/);
+  if(mBase&&mCap){
+    const desc=mCap[2]?` <i>${mCap[2]}</i>`:'';
+    return `<div class="ib">
+      <div class="ib-row"><span>삼성 브랜드 귀속 시장<br><i>전브랜드 시장 × 삼성 점유 ≈33~40%</i></span><b>${mBase[1]}억</b></div>
+      <div class="ib-row acc"><span>× 당사 채널 캡처 <em>${mCap[1]}%</em>${desc}</span><b>${x.value}억</b></div>
+    </div>
+    <div class="ib-note">삼성이 팔릴 시장에서 온라인(삼성닷컴 직영)·하이마트·대리점 이탈분을 뺀 <b>우리 매장(삼성스토어) 몫</b>이 당사 판매기대액입니다. 중립 가정치.</div>`;
+  }
+  // B) 모집단 × 전환 × 객단가 = 전브랜드 × 삼성점유 × 캡처
+  const pop=b.match(/([\d,]+)\s*(세대|가구|명)/), mkt=b.match(/([\d.]+)\s*억\s*\(전브랜드\)/);
+  if(pop&&mkt){
+    const conv=b.match(/전환\s*([\d.]+)/), price=b.match(/객단가\s*([\d,]+)\s*만/);
+    const shr=b.match(/삼성\s*점유?\s*([\d.]+)/), cap=b.match(/캡처\s*([\d.]+)/);
+    const s1=[`대상 <b>${pop[1]}</b>${pop[2]}`]; if(conv)s1.push(`전환 <em>${pct(conv[1])}%</em>`); if(price)s1.push(`객단가 <b>${price[1]}만</b>`);
+    const s2=[]; if(shr)s2.push(`삼성 점유 <em>${pct(shr[1])}%</em>`); if(cap)s2.push(`당사 캡처 <em>${pct(cap[1])}%</em>`);
+    return `<div class="ib">
+      <div class="ib-row"><span>${s1.join(' × ')}</span><b>${mkt[1]}억</b></div>
+      <div class="ib-row acc"><span>× ${s2.join(' × ')||'삼성 점유 · 당사 캡처'}</span><b>${x.value}억</b></div>
+    </div>
+    <div class="ib-note">신규 입주·이주 모집단에서 가전 구매 전환·객단가로 전브랜드 시장을 잡고, 삼성 점유와 당사 채널 캡처(임대·소형·상담형은 보수)를 반영한 <b>우리 매장 몫</b>. 중립 가정치.</div>`;
+  }
+  return `<div class="ib-raw">${b||'—'}</div>`;
+}
 function movFactorTable(cur){
   const head='<tr><th>월</th><th>조정계수</th><th>근거</th></tr>';
   const body=MOVEFACTOR.map((f,i)=>`<tr class="${i===cur?'cur':''}"><th>${i+1}월</th><td class="${i===cur?'estc':''}">${f.toFixed(2)}</td><td class="cxt">${MOVEBASIS[i]}</td></tr>`).join('');
@@ -580,7 +619,7 @@ function renderPage(mo){
       const when=x.month===0?(x.when||'상시'):'';
       html+=`<div class="pcard" style="--imp:${IMPVAR[x.impact]}">
         <div class="ct"><h4>${x.title}</h4><div class="meta"><span class="tag reg">${x.region}</span><span class="tag imp-${x.impact}">영향도 ${x.impact}</span><span class="tag st">${x.status}</span>${when?`<span class="tag">${when}</span>`:''}</div></div>
-        ${x.value!=null?`<div class="valrow"><span class="val" tabindex="0"><span class="lb">당사 판매기대</span> ≈ <b class="num">${x.value}</b><span class="u">억원</span><span class="tip"><b>산출근거</b>${x.basis||'—'}</span></span></div>`:''}
+        ${x.value!=null?`<div class="valrow"><span class="val" tabindex="0"><span class="lb">당사 판매기대</span> ≈ <b class="num">${x.value}</b><span class="u">억원</span><span class="tip"><b>당사 판매기대액 산출</b>${issueBasis(x)}</span></span></div>`:''}
         <div class="lk">${x.link}</div>
         <div class="hk"><b>판매 훅 · 경남영업팀 액션</b>${x.hook}</div>
         <div class="src">출처: ${x.source||'-'}</div></div>`;});
