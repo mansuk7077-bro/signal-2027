@@ -136,6 +136,37 @@
   .ebrow b{color:var(--qc)}
   .qd-mbasis{margin:2px 0 12px;padding:10px 14px;border-radius:10px;background:color-mix(in srgb,var(--qc) 8%,transparent);font-size:12.5px;line-height:1.5}
   .qd-mbasis b{color:var(--qc)}
+  .wr-hero{padding:15px 18px;border-radius:16px;background:linear-gradient(135deg,color-mix(in srgb,var(--qc) 15%,var(--surface)),var(--surface));border:1px solid color-mix(in srgb,var(--qc) 30%,var(--line));margin-bottom:11px}
+  .wr-eyebrow{font-size:11px;font-weight:800;letter-spacing:.05em;color:var(--qc);text-transform:uppercase;margin-bottom:5px}
+  .wr-headline{font-size:19px;font-weight:800;line-height:1.15;color:var(--ink)}
+  .wr-headline b{font-size:30px;color:var(--qc)}
+  .wr-headline span{font-size:14px;color:var(--muted);margin-left:3px;font-weight:700}
+  .wr-why{margin-top:8px;font-size:12.5px;color:var(--muted);line-height:1.5}
+  .wr-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:11px}
+  .wr-tile{padding:11px 6px;border-radius:12px;background:var(--surface-2);border:1px solid var(--line);text-align:center}
+  .wr-tile .t{display:block;font-size:11.5px;color:var(--muted);font-weight:700;margin-bottom:3px}
+  .wr-tile b{font-size:20px;font-weight:800;color:var(--ink)}
+  .wr-tile .u{font-size:11px;color:var(--muted);margin-left:1px}
+  .wr-sales{padding:16px 18px;border-radius:16px;background:var(--surface-2);border:1px solid var(--line);margin-bottom:11px}
+  .wr-sl{font-size:12.5px;line-height:1.6;color:var(--ink)}
+  .wr-sl b{color:var(--qc)}
+  .wr-amt{margin:11px 0 13px;display:flex;align-items:baseline;gap:5px}
+  .wr-amt>span:first-child{font-size:14px;color:var(--muted);font-weight:700}
+  .wr-amt b{font-size:40px;font-weight:800;color:var(--qc);line-height:.9}
+  .wr-amt>span:last-child{font-size:17px;color:var(--ink);font-weight:800}
+  .wr-steps{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+  .wr-step{display:flex;align-items:center;gap:7px;font-size:11.5px;padding:9px 11px;border-radius:10px;background:var(--surface);border:1px solid var(--line);color:var(--ink)}
+  .wr-step i{flex:none;width:18px;height:18px;border-radius:50%;background:var(--qc);color:#fff;font-size:10.5px;font-weight:800;font-style:normal;display:grid;place-items:center}
+  .wr-step b{margin-left:auto;font-weight:800}
+  .wr-note{margin-top:11px;font-size:11.5px;line-height:1.55;color:var(--muted)}
+  .wr-note b{color:var(--ink)}
+  .wr-ref{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface)}
+  .wr-ref>summary{cursor:pointer;padding:12px 16px;font-size:12px;font-weight:700;color:var(--ink);background:var(--surface-2);list-style:none;user-select:none}
+  .wr-ref>summary::-webkit-details-marker{display:none}
+  .wr-ref>summary::before{content:'▸ ';color:var(--qc);font-weight:800}
+  .wr-ref[open]>summary::before{content:'▾ '}
+  .wr-refin{padding:6px 16px 14px}
+  .wr-eb-t{font-size:11px;font-weight:800;color:var(--qc);text-transform:uppercase;margin:12px 0 8px;letter-spacing:.03em}
   .qd-tb{width:100%;border-collapse:collapse;font-size:12.5px}
   .qd-tb td{padding:5px 4px;border-bottom:1px solid var(--line);font-weight:600}
   .qd-tb td.r{text-align:right;color:var(--ink)}
@@ -323,6 +354,38 @@ function wedGrid(){
     <div class="sub">전년 대비 증감 ▲증가 ▼감소. 2024·2025 전국 급반등(코로나로 미룬 결혼) → 2027은 24만 안팎 평탄화 전망. 2021·2022 및 2025 지역치는 잠정·[추정](통계청·부산일보·경상일보 등).</div></div>
   <div class="qd-box2"><div class="qd-t">2027 지역별 추정 근거 (쉽게)</div>${eb}</div>`;
 }
+function renderWedReport(mo){
+  const d=DEMAND.wed, qi=mo-1, wt=d.weights[qi];
+  const cnt=Math.round(d.annual*wt/100), amount=QT.wed[qi];
+  const P=Math.round(d.brandShare*100), C=Math.round(d.capture*100), R=Math.round(d.rate*100);
+  const tiles=Object.entries(WEDREG).map(([r,a])=>`<div class="wr-tile"><span class="t">${r}</span><b>${fmt(Math.round(a*wt/100))}</b><span class="u">쌍</span></div>`).join('');
+  const eb=Object.entries(WEDHIST.estBasis).map(([r,t])=>`<div class="ebrow"><b>${r}</b> ${t}</div>`).join('');
+  return `<div class="wr-hero">
+      <div class="wr-eyebrow">${mlabel(mo)} 혼수 리포트 · 부산·울산·경남</div>
+      <div class="wr-headline">이달 결혼 예상 <b>${fmt(cnt)}</b><span>쌍</span></div>
+      <div class="wr-why">📅 ${WEDHIST.monthlyBasis[qi]}</div>
+    </div>
+    <div class="wr-tiles">${tiles}</div>
+    <div class="wr-sales">
+      <div class="wr-sl">이 커플들이 신혼집을 채울 <b>혼수 가전</b>(냉장고·세탁기·TV·에어컨·건조기…)을 장만합니다. 그중 <b>삼성 제품</b>을 <b>삼성스토어(로드샵·백화점)</b>에서 구매하시는 금액</div>
+      <div class="wr-amt"><span>약</span><b>${amount}</b><span>억원</span></div>
+      <div class="wr-steps">
+        <div class="wr-step"><i>1</i>결혼 <b>${fmt(cnt)}쌍</b> · 가전 준비 <b>${R}%</b></div>
+        <div class="wr-step"><i>2</i>한 쌍 혼수 가전값 <b>${fmt(d.price)}만원</b></div>
+        <div class="wr-step"><i>3</i>삼성 브랜드 선택 <b>${P}%</b></div>
+        <div class="wr-step"><i>4</i>우리 매장서 구매 <b>${C}%</b></div>
+      </div>
+      <div class="wr-note">혼수는 <b>3대 필수(냉장고·세탁기·TV)</b>에 에어컨·건조기·식기세척기까지 이어지는 <b>패키지 구매</b>가 많아, 한 쌍당 객단가가 높고 브랜드 충성도가 큰 시장입니다. ${mlabel(mo)}은 위 근거대로 수요가 형성됩니다.</div>
+    </div>
+    <details class="wr-ref">
+      <summary>참고 — 전국·지역별 혼인 추이 (2021~2025 실측 → 2027 추정)</summary>
+      <div class="wr-refin">
+        <div class="qd-scroll">${wedHistTable()}</div>
+        <div class="sub">전년 대비 ▲증가 ▼감소. 2021·2022·2025 지역치는 잠정·[추정]. 2024·2025 전국 급반등(코로나로 미룬 결혼) → 2027은 24만 안팎 평탄화 전망.</div>
+        <div class="wr-eb-t">2027 지역별 추정 근거 (쉽게)</div>${eb}
+      </div>
+    </details>`;
+}
 /* 당사 판매기대액 재계산: 전브랜드 시장 × 삼성 브랜드 점유 × 당사 캡처 ( 이사=×조정계수, 입주=컨디션 전환세대 ) */
 (function(){const d=DEMAND;
   QT.wedc=d.wed.weights.map(w=>Math.round(d.wed.annual*w/100));
@@ -365,14 +428,16 @@ function renderQuantDetail(ax){
       <div class="qd-box"><div class="qd-t">지역별 연간 (${d.unit})</div><table class="qd-tb"><tbody>${regRows}</tbody></table></div>
       <div class="qd-box"><div class="qd-t">2027 판단 근거</div><p class="qd-p">${d.reason}</p></div>
     </div>`;
-  return `<div class="qd-bar" style="--qc:${c}">
-    <div class="qd-head"><b>${d.name} · ${mlabel(mo)} 수요 산출근거</b><button class="qd-x">닫기 ✕</button></div>
-    ${ax==='wed'?wedGrid():stdGrid}
+  const stdBody=`${stdGrid}
     ${extraHtml}
     <div class="qd-calc"><div class="qd-t">${mlabel(mo)} · 당사(삼성전자판매 경남영업팀 · 로드샵·백화점) 판매기대액 산출</div>
       <div class="qd-flow">${flowHtml}</div>
       <div class="qd-note">${calcNote}<br>당사 판매기대액 = 전브랜드 시장 × 삼성 브랜드 점유(≈40%) × 당사 채널 캡처율. 삼성닷컴(직영 온라인)·하이마트·전자랜드·대리점·빌트인 특판 이탈 반영. 모든 계수는 중립 가정치 → 사내 정산·매장 POS로 캘리브레이션 권장.</div>
-    </div></div>`;
+    </div>`;
+  return `<div class="qd-bar" style="--qc:${c}">
+    <div class="qd-head"><b>${d.name} · ${mlabel(mo)} 수요 산출근거</b><button class="qd-x">닫기 ✕</button></div>
+    ${ax==='wed'?renderWedReport(mo):stdBody}
+  </div>`;
 }
 function toggleQuantDetail(ax){
   const box=document.getElementById('quantDetail'); if(!box)return;
