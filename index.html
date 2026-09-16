@@ -136,30 +136,27 @@
   .ebrow b{color:var(--qc)}
   .qd-mbasis{margin:2px 0 12px;padding:10px 14px;border-radius:10px;background:color-mix(in srgb,var(--qc) 8%,transparent);font-size:12.5px;line-height:1.5}
   .qd-mbasis b{color:var(--qc)}
-  .wr-hero{padding:15px 18px;border-radius:16px;background:linear-gradient(135deg,color-mix(in srgb,var(--qc) 15%,var(--surface)),var(--surface));border:1px solid color-mix(in srgb,var(--qc) 30%,var(--line));margin-bottom:11px}
-  .wr-eyebrow{font-size:11px;font-weight:800;letter-spacing:.05em;color:var(--qc);text-transform:uppercase;margin-bottom:5px}
-  .wr-headline{font-size:19px;font-weight:800;line-height:1.15;color:var(--ink)}
-  .wr-headline b{font-size:30px;color:var(--qc)}
-  .wr-headline span{font-size:14px;color:var(--muted);margin-left:3px;font-weight:700}
-  .wr-why{margin-top:8px;font-size:12.5px;color:var(--muted);line-height:1.5}
-  .wr-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:11px}
-  .wr-tile{padding:11px 6px;border-radius:12px;background:var(--surface-2);border:1px solid var(--line);text-align:center}
-  .wr-tile .t{display:block;font-size:11.5px;color:var(--muted);font-weight:700;margin-bottom:3px}
-  .wr-tile b{font-size:20px;font-weight:800;color:var(--ink)}
-  .wr-tile .u{font-size:11px;color:var(--muted);margin-left:1px}
-  .wr-sales{padding:16px 18px;border-radius:16px;background:var(--surface-2);border:1px solid var(--line);margin-bottom:11px}
-  .wr-sl{font-size:12.5px;line-height:1.6;color:var(--ink)}
-  .wr-sl b{color:var(--qc)}
-  .wr-amt{margin:11px 0 13px;display:flex;align-items:baseline;gap:5px}
-  .wr-amt>span:first-child{font-size:14px;color:var(--muted);font-weight:700}
-  .wr-amt b{font-size:40px;font-weight:800;color:var(--qc);line-height:.9}
-  .wr-amt>span:last-child{font-size:17px;color:var(--ink);font-weight:800}
-  .wr-steps{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
-  .wr-step{display:flex;align-items:center;gap:7px;font-size:11.5px;padding:9px 11px;border-radius:10px;background:var(--surface);border:1px solid var(--line);color:var(--ink)}
-  .wr-step i{flex:none;width:18px;height:18px;border-radius:50%;background:var(--qc);color:#fff;font-size:10.5px;font-weight:800;font-style:normal;display:grid;place-items:center}
-  .wr-step b{margin-left:auto;font-weight:800}
-  .wr-note{margin-top:11px;font-size:11.5px;line-height:1.55;color:var(--muted)}
-  .wr-note b{color:var(--ink)}
+  .wl-head{margin-bottom:9px}
+  .wl-title{font-size:14.5px;font-weight:800;color:var(--ink)}
+  .wl-title b{color:var(--qc);font-size:17px}
+  .wl-why{margin-top:3px;font-size:12px;color:var(--muted);line-height:1.45}
+  .wl{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:10px}
+  .wl-row{display:flex;align-items:center;gap:9px;padding:8px 12px;border-bottom:1px solid var(--line);background:var(--surface)}
+  .wl-row:last-child{border-bottom:0}
+  .wl-row.final{background:color-mix(in srgb,var(--qc) 10%,var(--surface))}
+  .wl-n{flex:none;width:18px;height:18px;border-radius:50%;background:var(--surface-2);border:1px solid var(--line);color:var(--muted);font-size:10.5px;font-weight:800;display:grid;place-items:center}
+  .wl-row.final .wl-n{background:var(--qc);color:#fff;border-color:var(--qc)}
+  .wl-l{flex:1;min-width:0}
+  .wl-op{font-size:12px;color:var(--ink);line-height:1.35}
+  .wl-op b{color:var(--qc);font-weight:800}
+  .wl-sub{font-size:10.5px;color:var(--muted);margin-top:1px;line-height:1.35}
+  .wl-sub b{color:var(--ink);font-weight:700}
+  .wl-r{flex:none;font-size:18px;font-weight:800;color:var(--ink);line-height:1;text-align:right;white-space:nowrap}
+  .wl-row.final .wl-r{color:var(--qc);font-size:23px}
+  .wl-r span{font-size:11px;color:var(--muted);font-weight:700;margin-left:2px}
+  .wl-concl{padding:11px 13px;border-radius:11px;background:var(--surface-2);border:1px solid var(--line);font-size:11.5px;line-height:1.55;color:var(--muted);margin-bottom:11px}
+  .wl-concl b{color:var(--ink)}
+  .wl-concl>b:first-child{color:var(--qc);font-size:13px}
   .wr-ref{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface)}
   .wr-ref>summary{cursor:pointer;padding:12px 16px;font-size:12px;font-weight:700;color:var(--ink);background:var(--surface-2);list-style:none;user-select:none}
   .wr-ref>summary::-webkit-details-marker{display:none}
@@ -356,27 +353,24 @@ function wedGrid(){
 }
 function renderWedReport(mo){
   const d=DEMAND.wed, qi=mo-1, wt=d.weights[qi];
-  const cnt=Math.round(d.annual*wt/100), amount=QT.wed[qi];
+  const cnt=Math.round(d.annual*wt/100);
+  const mR=cnt*d.rate*d.price/10000, market=Math.round(mR*10)/10;
+  const samsung=Math.round(mR*d.brandShare*10)/10, ours=QT.wed[qi];
   const P=Math.round(d.brandShare*100), C=Math.round(d.capture*100), R=Math.round(d.rate*100);
-  const tiles=Object.entries(WEDREG).map(([r,a])=>`<div class="wr-tile"><span class="t">${r}</span><b>${fmt(Math.round(a*wt/100))}</b><span class="u">쌍</span></div>`).join('');
+  const regs=Object.entries(WEDREG).map(([r,a])=>`${r} <b>${fmt(Math.round(a*wt/100))}</b>`).join(' · ');
   const eb=Object.entries(WEDHIST.estBasis).map(([r,t])=>`<div class="ebrow"><b>${r}</b> ${t}</div>`).join('');
-  return `<div class="wr-hero">
-      <div class="wr-eyebrow">${mlabel(mo)} 혼수 리포트 · 부산·울산·경남</div>
-      <div class="wr-headline">이달 결혼 예상 <b>${fmt(cnt)}</b><span>쌍</span></div>
-      <div class="wr-why">📅 ${WEDHIST.monthlyBasis[qi]}</div>
+  const row=(n,op,sub,res,unit,cls='')=>`<div class="wl-row ${cls}"><span class="wl-n">${n}</span><div class="wl-l"><div class="wl-op">${op}</div><div class="wl-sub">${sub}</div></div><div class="wl-r">${res}<span>${unit}</span></div></div>`;
+  return `<div class="wl-head">
+      <div class="wl-title"><b>${mlabel(mo)}</b> 혼수 산출근거 · 부산·울산·경남</div>
+      <div class="wl-why">📅 ${WEDHIST.monthlyBasis[qi]}</div>
     </div>
-    <div class="wr-tiles">${tiles}</div>
-    <div class="wr-sales">
-      <div class="wr-sl">이 커플들이 신혼집을 채울 <b>혼수 가전</b>(냉장고·세탁기·TV·에어컨·건조기…)을 장만합니다. 그중 <b>삼성 제품</b>을 <b>삼성스토어(로드샵·백화점)</b>에서 구매하시는 금액</div>
-      <div class="wr-amt"><span>약</span><b>${amount}</b><span>억원</span></div>
-      <div class="wr-steps">
-        <div class="wr-step"><i>1</i>결혼 <b>${fmt(cnt)}쌍</b> · 가전 준비 <b>${R}%</b></div>
-        <div class="wr-step"><i>2</i>한 쌍 혼수 가전값 <b>${fmt(d.price)}만원</b></div>
-        <div class="wr-step"><i>3</i>삼성 브랜드 선택 <b>${P}%</b></div>
-        <div class="wr-step"><i>4</i>우리 매장서 구매 <b>${C}%</b></div>
-      </div>
-      <div class="wr-note">혼수는 <b>3대 필수(냉장고·세탁기·TV)</b>에 에어컨·건조기·식기세척기까지 이어지는 <b>패키지 구매</b>가 많아, 한 쌍당 객단가가 높고 브랜드 충성도가 큰 시장입니다. ${mlabel(mo)}은 위 근거대로 수요가 형성됩니다.</div>
+    <div class="wl">
+      ${row(1,`연 추정 <b>${fmt(d.annual)}</b>건 × ${mlabel(mo)} 결혼 비중 <b>${wt}%</b>`,`이달 결혼 · ${regs}`,fmt(cnt),'쌍')}
+      ${row(2,`× 가전 구매 <b>${R}%</b> × 한 쌍 혼수값 <b>${fmt(d.price)}만원</b>`,'전브랜드 혼수 가전 시장',market,'억')}
+      ${row(3,`× 삼성 브랜드 점유 <b>${P}%</b>`,'삼성 브랜드가 가져가는 몫',samsung,'억')}
+      ${row(4,`× 우리 매장 구매 <b>${C}%</b>`,'삼성스토어 로드샵·백화점',ours,'억','final')}
     </div>
+    <div class="wl-concl"><b>${mlabel(mo)} 당사 판매기대액 ≈ ${ours}억원</b><br>이달 결혼 <b>${fmt(cnt)}쌍</b>이 혼수로 냉장고·세탁기·TV·에어컨 등 삼성 가전을 우리 매장에서 장만하는 금액. 혼수는 3대 필수+α <b>패키지 구매</b>가 많아 객단가·브랜드 충성도가 높습니다.</div>
     <details class="wr-ref">
       <summary>참고 — 전국·지역별 혼인 추이 (2021~2025 실측 → 2027 추정)</summary>
       <div class="wr-refin">
