@@ -56,6 +56,8 @@
   .hero-right{display:flex;align-items:center;gap:9px;flex-wrap:wrap;animation:rise .5s .16s both}
   .chip{display:flex;align-items:baseline;gap:6px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:100px;padding:7px 13px}
   .chip b{font-size:15px;font-weight:900;color:#fff} .chip span{font-size:10.5px;color:#aeb8cf;font-weight:600}
+  .chip.tot{background:linear-gradient(90deg,rgba(127,176,255,.30),rgba(127,176,255,.12));border-color:rgba(127,176,255,.55)} .chip.tot b{color:#eaf1ff}
+  .chip.c-wed b{color:#7fb0ff} .chip.c-mov b{color:#5fe0b0} .chip.c-min b{color:#c3a2ff} .chip.c-iss b{color:#f6b26b}
   .themebtn{border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.08);color:#fff;border-radius:100px;padding:8px 13px;font-size:12px;cursor:pointer;font-family:inherit;transition:.15s}
   .themebtn:hover{background:rgba(255,255,255,.16)}
   @keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
@@ -268,7 +270,7 @@
     <div class="ov" id="overview"></div>
   </div></section>
   <footer><div class="wrap">
-    <div class="disc"><b>데이터 성격.</b> 2027 이슈는 <b>확정</b>(법정일정·공식발표)/<b>예정</b>(계획·관행)/<b>추정</b>(과거주기)으로 구분. 월별 '판매 잠재'는 부울경 혼수·이사·입주에서 <b>당사(삼성전자판매 경남영업팀) 판매기대액</b>(2단계: 삼성 브랜드 점유 × 채널 캡처율 · 중립 · 억원 · 가정치 포함).<br><br><b>2027 대선 없음</b> — 21대 대선 2025-06-03 조기 실시. <b>경남지사</b> 박완수(재선).</div>
+    <div class="disc"><b>데이터 성격.</b> 2027 이슈는 <b>확정</b>(법정일정·공식발표)/<b>예정</b>(계획·관행)/<b>추정</b>(과거주기)으로 구분. 월별·연간 '기대판매'는 부울경 혼수·이사·입주 + 해당 기간 이슈의 <b>당사(삼성전자판매 경남영업팀) 판매기대액</b> 합계(2단계: 삼성 브랜드 점유 × 채널 캡처율 · 중립 · 억원 · 가정치 포함). 상단바는 연간 합계. ※ 혼수·이사·입주 3축이 계절 생활수요를 대표하므로 '이슈'는 정책·성과급·유통·지역 등 <b>외부 이벤트 기준</b>(시즌생활 중복분 제외)이며, 일부 입주·지역 이슈는 3축과 부분 중복 가능.<br><br><b>2027 대선 없음</b> — 21대 대선 2025-06-03 조기 실시. <b>경남지사</b> 박완수(재선).</div>
     <div>출처: 통계청, 삼성뉴스룸, 전자신문, ZDNet, 국민일보, 부산일보·경남신문, 각 지자체 등 · 기준 2026-09-15</div>
   </div></footer>
 </div>
@@ -575,10 +577,24 @@ function catMatch(x){
   return x.cat===fCat;
 }
 
-/* hero right: stats + theme */
+/* 연간·월별 기대판매액 집계 — '시즌생활'(혼수·이사·계절)은 3대 수요축과 중복이라 이슈 합계에서 제외 */
+const isExtIssue=x=>x.value!=null && x.cat!=='시즌생활';
+function issueMonthSum(m){return ISSUES.filter(x=>x.month===m&&isExtIssue(x)).reduce((a,x)=>a+x.value,0);}
+const ANNUAL={
+  wed:Math.round(QT.wed.reduce((a,b)=>a+b,0)),
+  mov:Math.round(QT.mov.reduce((a,b)=>a+b,0)),
+  min:Math.round(QT.min.reduce((a,b)=>a+b,0)),
+  iss:Math.round(ISSUES.filter(isExtIssue).reduce((a,x)=>a+x.value,0))};
+ANNUAL.total=ANNUAL.wed+ANNUAL.mov+ANNUAL.min+ANNUAL.iss;
+function monthTotal(m){return m>=1?Math.round((QT.tot[m-1]+issueMonthSum(m))*10)/10:Math.round(issueMonthSum(0)*10)/10;}
+
+/* hero right: 연간 기대판매액 + theme */
 document.getElementById('heroRight').innerHTML=
-  [{b:ISSUES.length,s:'이슈'},{b:'3',s:'지역'},{b:'12',s:'개월+상시'}]
-   .map(x=>`<div class="chip"><b class="num">${x.b}</b><span>${x.s}</span></div>`).join('')
+  `<div class="chip tot"><b class="num">${ANNUAL.total.toLocaleString()}억</b><span>연 판매기대</span></div>`
+  +`<div class="chip c-wed"><b class="num">${ANNUAL.wed}억</b><span>혼수</span></div>`
+  +`<div class="chip c-mov"><b class="num">${ANNUAL.mov}억</b><span>이사</span></div>`
+  +`<div class="chip c-min"><b class="num">${ANNUAL.min}억</b><span>입주</span></div>`
+  +`<div class="chip c-iss"><b class="num">${ANNUAL.iss}억</b><span>이슈</span></div>`
   +'<button class="themebtn" id="theme">◐ 테마</button>';
 
 function renderHome(){
@@ -586,7 +602,7 @@ function renderHome(){
     const all=ISSUES.filter(x=>x.month===mo && (fReg==='all'||x.region.includes(fReg)) && catMatch(x));
     let hi=all.filter(x=>x.impact==='상'); if(!hi.length)hi=all.filter(x=>x.impact==='중');
     const show=hi.slice(0,3).map(x=>`<li class="${x.impact==='중'?'mid':''}">${x.title}</li>`).join('')||'<li class="mid" style="color:var(--faint)">주요 이슈 없음</li>';
-    const rev=(mo>=1)?`<div class="rev num">판매 잠재 ${Math.round(QT.tot[mo-1])}억</div>`:'<div class="rev">상시·기간 이슈</div>';
+    const rev=(mo>=1)?`<div class="rev num">기대판매 ${monthTotal(mo)}억</div>`:`<div class="rev num">상시·기간 이슈 ${monthTotal(0)}억</div>`;
     const q=mo===0?0:Math.ceil(mo/3); const qlab=mo===0?'상시':q+'분기';
     return `<button class="ovc q${q}" data-mo="${mo}" style="animation-delay:${i*28}ms"><div class="m"><span class="mm">${mlabel(mo)}</span><span class="qtag">${qlab}</span><span class="go">›</span></div>${rev}<ul>${show}</ul><div class="cnt">전체 ${all.length}건 · 상세 보기</div></button>`;
   }).join('');
@@ -604,7 +620,7 @@ document.getElementById('catbar').addEventListener('click',e=>{const b=e.target.
 
 function renderPage(mo){
   document.getElementById('p-month').textContent=mlabel(mo);
-  document.getElementById('p-rev').textContent=mo>=1?`판매 잠재 ${Math.round(QT.tot[mo-1])}억 (혼수·이사·입주)`:'';
+  document.getElementById('p-rev').textContent=mo>=1?`당사 기대판매 ${monthTotal(mo)}억 · 혼수+이사+입주+이슈`:`당사 기대판매 ${monthTotal(0)}억 · 상시·기간 이슈`;
   const list=ISSUES.filter(x=>x.month===mo).sort((a,b)=>impRank[a.impact]-impRank[b.impact]);
   const cats=[...new Set(list.map(x=>x.cat))].sort((a,b)=>{
     const ra=Math.min(...list.filter(x=>x.cat===a).map(x=>impRank[x.impact]));
