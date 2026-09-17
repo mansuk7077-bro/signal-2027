@@ -101,7 +101,14 @@
   .ovc li{font-size:14.5px;line-height:1.36;font-weight:600;color:var(--ink);padding-left:14px;position:relative}
   .ovc li::before{content:"";position:absolute;left:0;top:5px;width:5px;height:5px;border-radius:50%;background:var(--hi)}
   .ovc li.mid::before{background:var(--mid)}
-  .ovc .cnt{font-size:12px;color:var(--faint);font-weight:700;margin-top:auto;padding-top:11px;padding-left:14px}
+  .ovc .cnt{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto;padding-top:12px;border-top:1px solid var(--line)}
+  .ovc .cta{font-size:12.5px;font-weight:800;color:var(--q);display:inline-flex;align-items:center;gap:4px}
+  .ovc .cta .arw{display:inline-block;transition:transform .18s}
+  .ovc:hover .cta .arw{transform:translate(2px,-2px)}
+  .ovc .cnt-n{font-size:11.5px;color:var(--faint);font-weight:700}
+  .wm{position:absolute;top:0;right:13px;font-size:62px;font-weight:900;line-height:1;color:var(--q);opacity:.1;letter-spacing:-.06em;pointer-events:none;font-variant-numeric:tabular-nums;z-index:0}
+  .ovc .m,.ovc .rev,.ovc>ul,.ovc .cnt{position:relative;z-index:1}
+  .ovc::after{display:none}
   @keyframes pop{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
   /* 분기별 색 구분 + 월 효과 */
   .ovc{--q:var(--accent)}
@@ -611,8 +618,9 @@ function ovCard(mo,i){
   let hi=all.filter(x=>x.impact==='상'); if(!hi.length)hi=all.filter(x=>x.impact==='중');
   const show=hi.slice(0,3).map(x=>`<li class="${x.impact==='중'?'mid':''}">${x.title}</li>`).join('')||'<li class="mid" style="color:var(--faint)">주요 이슈 없음</li>';
   const q=mo===0?0:Math.ceil(mo/3);
+  const wm=mo===0?'':String(mo).padStart(2,'0');
   const rev=`<div class="rev"><b class="num">${monthTotal(mo)}<span class="u">억</span></b><span class="lb">기대매출</span></div>`;
-  return `<button class="ovc q${q}" data-mo="${mo}" style="animation-delay:${i*22}ms"><div class="m"><span class="mm">${mlabel(mo)}</span><span class="go">›</span></div>${rev}<ul>${show}</ul><div class="cnt">전체 ${all.length}건 · 상세 보기</div></button>`;
+  return `<button class="ovc q${q}" data-mo="${mo}" style="animation-delay:${i*22}ms">${wm?`<span class="wm">${wm}</span>`:''}<div class="m"><span class="mm">${mlabel(mo)}</span></div>${rev}<ul>${show}</ul><div class="cnt"><span class="cta">자세히 보기 <span class="arw">↗</span></span><span class="cnt-n">전체 ${all.length}건</span></div></button>`;
 }
 function renderHome(){
   const qMeta=[[1,'1분기','1–3월',[1,2,3]],[2,'2분기','4–6월',[4,5,6]],[3,'3분기','7–9월',[7,8,9]],[4,'4분기','10–12월',[10,11,12]],[0,'상시·기간','연중 상시',[0]]];
