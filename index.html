@@ -78,7 +78,8 @@
   .qrow{--q:var(--accent);display:grid;grid-template-columns:158px 1fr;gap:14px}
   .qrow.q1{--q:#2f6bed} .qrow.q2{--q:#17a673} .qrow.q3{--q:#e8843a} .qrow.q4{--q:#9a5cf0} .qrow.q0{--q:#6b7280}
   .qside{display:flex;flex-direction:column;justify-content:center;gap:2px;padding:14px 16px;border-radius:16px;background:color-mix(in srgb,var(--q) 12%,var(--surface));border:1px solid color-mix(in srgb,var(--q) 30%,var(--line))}
-  .qside-n{font-size:22px;font-weight:900;color:var(--q);letter-spacing:-.03em}
+  .qside-n{font-size:22px;font-weight:900;color:var(--ink);letter-spacing:-.03em;display:flex;align-items:center;gap:8px}
+  .qside-n::before{content:'';width:9px;height:9px;border-radius:50%;background:var(--q);flex:none}
   .qside-mo{font-size:12px;color:var(--muted);font-weight:700;margin-top:1px;white-space:nowrap}
   .qside-v{margin-top:11px;display:flex;flex-direction:column;line-height:1}
   .qside-v b{font-size:32px;font-weight:900;color:var(--q);letter-spacing:-.035em;font-variant-numeric:tabular-nums}
@@ -110,7 +111,8 @@
   .ovc::after{content:"";position:absolute;right:-30px;top:-30px;width:82px;height:82px;border-radius:50%;background:var(--q);opacity:.07;transition:opacity .2s,transform .2s}
   .ovc:hover::after{opacity:.14;transform:scale(1.25)}
   .ovc .m{align-items:center;justify-content:flex-start}
-  .ovc .m .mm{color:var(--q);font-size:20px;font-weight:900;letter-spacing:-.02em}
+  .ovc .m .mm{color:var(--ink);font-size:20px;font-weight:900;letter-spacing:-.02em;display:flex;align-items:center;gap:7px}
+  .ovc .m .mm::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--q);flex:none}
   .ovc .m .qtag{font-size:10.5px;font-weight:800;color:var(--q);background:color-mix(in srgb,var(--q) 15%,transparent);padding:3px 9px;border-radius:100px;margin-left:9px;letter-spacing:.02em}
   .ovc .m .go{margin-left:auto}
   /* 상세: 혼수·이사·입주 정량 */
