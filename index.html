@@ -258,9 +258,38 @@
   .tip .ib-raw{font-size:11.5px;line-height:1.55}
   footer{border-top:1px solid var(--line);margin-top:28px;padding:32px 0 56px;color:var(--faint);font-size:12px}
   footer .disc{background:var(--bg-soft);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px;line-height:1.65;font-weight:500;max-width:900px}
+  .econ{padding:16px 0 6px}
+  .econ-ht h2{font-size:clamp(18px,2vw,23px);font-weight:900;letter-spacing:-.025em;display:flex;align-items:center;gap:10px;margin:0}
+  .econ-ht .stance{font-size:12px;font-weight:800;color:#fff;background:var(--accent);padding:4px 11px;border-radius:100px;letter-spacing:.02em}
+  .econ-ht p{margin:8px 0 0;color:var(--muted);font-size:13px;font-weight:600;line-height:1.55;max-width:920px}
+  .ecards{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin:15px 0 16px}
+  .ecard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:var(--shadow)}
+  .ec-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .ec-lb{font-size:12px;font-weight:700;color:var(--muted)}
+  .ec-dir{font-size:14px;font-weight:900;line-height:1}
+  .ec-dir.up{color:#17a673} .ec-dir.down{color:#e5843a} .ec-dir.flat{color:var(--faint)}
+  .ec-val{font-size:21px;font-weight:900;color:var(--ink);letter-spacing:-.02em;margin:5px 0 6px;font-variant-numeric:tabular-nums}
+  .ec-note{font-size:11px;line-height:1.45;color:var(--faint);font-weight:500}
+  .econ-appl{background:var(--bg-soft);border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+  .ea-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+  .ea-head b{font-size:15px;font-weight:900;color:var(--ink)}
+  .ea-growth{font-size:12px;font-weight:800;color:var(--accent);background:var(--accent-soft);padding:4px 11px;border-radius:100px}
+  .ea-narr{margin:10px 0 14px;font-size:13px;line-height:1.7;color:var(--ink);font-weight:500}
+  .ea-cols{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:12px}
+  .ea-col{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+  .ea-ct{font-size:12px;font-weight:800;margin-bottom:8px;letter-spacing:.02em}
+  .ea-col.drv .ea-ct{color:#17a673} .ea-col.rsk .ea-ct{color:#e5843a}
+  .ea-col ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+  .ea-col li{font-size:12px;line-height:1.5;color:var(--ink);padding-left:16px;position:relative;font-weight:500}
+  .ea-col.drv li::before{content:'✓';position:absolute;left:0;top:0;color:#17a673;font-weight:900}
+  .ea-col.rsk li::before{content:'!';position:absolute;left:2px;top:0;color:#e5843a;font-weight:900}
+  .ea-bulc{font-size:12.5px;line-height:1.55;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;padding:10px 13px;font-weight:500}
+  .ea-bulc b{color:var(--accent)}
+  .ea-src{margin-top:10px;font-size:10.5px;color:var(--faint);line-height:1.5}
 
   @media (max-width:820px){.qrow{grid-template-columns:1fr;gap:10px}.qside{flex-direction:row;align-items:center;gap:10px;padding:11px 15px}.qside-v{flex-direction:row;align-items:baseline;gap:4px;margin:0 0 0 auto}.qside-v b{font-size:20px}.qrow-cards{grid-template-columns:repeat(2,1fr)}}
   @media (max-width:520px){.qrow-cards{grid-template-columns:1fr}}
+  @media (max-width:720px){.ecards{grid-template-columns:repeat(2,1fr)}.ea-cols{grid-template-columns:1fr}}
   @media (max-width:640px){.hero-title{font-size:22px} .ptitle b{font-size:26px} .pcard h4{font-size:16.5px}}
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
   :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
@@ -279,6 +308,7 @@
       <div class="hero-right" id="heroRight"></div>
     </div>
   </div>
+  <section class="econ"><div class="wrap" id="econ"></div></section>
   <section class="board"><div class="wrap">
     <div class="filters">
       <div class="frow"><span class="flabel">지역</span><div class="chips" id="regbar"></div></div>
@@ -615,6 +645,55 @@ document.getElementById('heroRight').innerHTML=
   +`<div class="chip c-iss"><b class="num">${ANNUAL.iss}억</b><span>이슈</span></div>`
   +'<button class="themebtn" id="theme">◐ 테마</button>';
 
+const ECON={
+ stance:"중립긍정",
+ summary:"반도체 슈퍼사이클로 2026년 3%대 고성장 뒤 2027년 2%대 초반으로 둔화되나, 소비·물가·심리는 개선 흐름을 이어가는 '완만한 회복형 감속' 국면",
+ indicators:[
+  {label:"실질 GDP 성장률",value:"2.0~2.2%",dir:"down",note:"2026년 고성장의 기저효과로 숫자는 낮아지나 잠재성장률 수준의 양호한 흐름 (KDI 2.2%·OECD 2.1%)"},
+  {label:"기준금리",value:"2.25~2.75%",dir:"flat",note:"현 2.50%. 반도체 호황·물가 부담에 공격적 인하 제한, 동결~소폭 조정 [추정]"},
+  {label:"소비자물가",value:"2.2% 내외",dir:"down",note:"유가 안정으로 2%대 초반 완화 → 실질구매력 개선에 우호적 (KDI)"},
+  {label:"민간소비",value:"약 +2.0%",dir:"up",note:"실질소득 개선으로 회복세이나 반도체 편중으로 강도는 완만 (KDI)"},
+  {label:"소비자심리(CCSI)",value:"105~107",dir:"up",note:"기준선(100) 웃도는 낙관, 연속 개선세 (한국은행 2026.5~7)"},
+  {label:"원/달러 환율",value:"1,300~1,350",dir:"down",note:"하향 안정 시 수입 프리미엄 가전 원가 부담 완화 [추정]"},
+  {label:"부울경 입주물량",value:"감소~보합",dir:"down",note:"경남 급감·울산 소폭↓·부산 소폭↑. 신규 이사수요 둔화, 신축 희소성은 교체수요 자극"},
+  {label:"실질소득·성과급",value:"개선(편중)",dir:"up",note:"반도체·수출 대기업 중심 임금·성과급 개선이 프리미엄 구매력 지지 [추정]"}
+ ],
+ appliance:{
+  growth:"+3~4% [추정]",
+  drivers:[
+   "AI가전 본격화(삼성 냉장고 Gemini·LG ThinQ)로 프리미엄 교체수요 견인",
+   "프리미엄 TV 2027까지 연 10% 성장, 초대형·OLED 고단가화",
+   "가전 구독·렌탈 급성장(2026 매출 2.48조·+29%)으로 구매장벽 완화",
+   "에너지효율 규제·7년 SW 지원 등 고효율·프리미엄 세그먼트 강화",
+   "금리 하향 안정·물가 둔화로 실질구매력·소비심리 회복(CCSI 105+)"
+  ],
+  risks:[
+   "인구감소·1인가구화로 대형가전 총량 수요 정체 압력",
+   "가계부채 부담·소득 편중으로 소비 양극화",
+   "부울경 입주물량 감소로 신규 이사 기반 세트 수요 둔화",
+   "중국산 저가 가전의 중저가 구간 잠식·가격경쟁 심화",
+   "환율·관세 불확실성 재부각 시 수입 프리미엄 원가 압박"
+  ],
+  narrative:"2027년 한국 경제는 반도체 호황의 기저효과로 성장률 숫자는 낮아지지만, 물가가 2%대 초반으로 잡히고 금리가 낮게 유지되며 소비심리가 기준선을 웃도는 '조용한 회복' 국면입니다. 가전에는 나쁘지 않은 환경으로, 대형 신규 이사수요가 폭발하기보다 AI가전·프리미엄 TV·고효율 제품 중심의 '교체·업그레이드 수요'가 시장을 끌고 갑니다. 구독·렌탈이 초기 부담을 낮추며 프리미엄 진입을 넓히는 점도 백화점 채널에 우호적입니다. 다만 인구감소와 소득 편중, 중국 저가공세로 물량보다 객단가로 버는 구조가 강화될 전망입니다.",
+  bulc:"부울경은 조선·자동차·석유화학·방산 등 주력산업 회복 시 성과급이 프리미엄 가전 구매력을 지지하나, 2027년 입주물량 감소로 신규 이사수요보다 교체·프리미엄 업그레이드 공략이 유효합니다."
+ },
+ src:"출처: KDI 경제전망·한국은행 통화신용정책보고서/소비자동향조사·OECD·Mordor Intelligence·KB부동산·전자신문 등 (2026~27 전망, 금리·환율·성과급은 [추정])"
+};
+function renderEcon(){
+  const e=ECON, A={up:['▲','up'],down:['▼','down'],flat:['→','flat']};
+  const inds=e.indicators.map(i=>{const[a,c]=A[i.dir]||A.flat;return `<div class="ecard"><div class="ec-top"><span class="ec-lb">${i.label}</span><span class="ec-dir ${c}">${a}</span></div><div class="ec-val">${i.value}</div><div class="ec-note">${i.note}</div></div>`;}).join('');
+  const li=arr=>arr.map(x=>`<li>${x}</li>`).join('');
+  document.getElementById('econ').innerHTML=`
+    <div class="econ-ht"><h2>2027 경기 전망<span class="stance">${e.stance}</span></h2><p>${e.summary}</p></div>
+    <div class="ecards">${inds}</div>
+    <div class="econ-appl">
+      <div class="ea-head"><b>경기 전망 → 가전 소비·업계 예측</b><span class="ea-growth">국내 가전 시장 ${e.appliance.growth}</span></div>
+      <p class="ea-narr">${e.appliance.narrative}</p>
+      <div class="ea-cols"><div class="ea-col drv"><div class="ea-ct">성장 동력</div><ul>${li(e.appliance.drivers)}</ul></div><div class="ea-col rsk"><div class="ea-ct">리스크</div><ul>${li(e.appliance.risks)}</ul></div></div>
+      <div class="ea-bulc"><b>부울경</b> ${e.appliance.bulc}</div>
+      <div class="ea-src">${e.src}</div>
+    </div>`;
+}
 function ovCard(mo,i){
   const all=ISSUES.filter(x=>x.month===mo && (fReg==='all'||x.region.includes(fReg)) && catMatch(x));
   let hi=all.filter(x=>x.impact==='상'); if(!hi.length)hi=all.filter(x=>x.impact==='중');
@@ -692,5 +771,5 @@ document.getElementById('back').addEventListener('click',showHome);
 const root=document.documentElement;
 document.getElementById('theme').addEventListener('click',()=>{const cur=root.getAttribute('data-theme')||'light';root.setAttribute('data-theme',cur==='dark'?'light':'dark');});
 
-renderHome();showHome();
+renderEcon();renderHome();showHome();
 </script>
