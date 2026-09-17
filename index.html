@@ -77,18 +77,19 @@
   .ov{display:flex;flex-direction:column;gap:15px}
   .qrow{--q:var(--accent);display:grid;grid-template-columns:158px 1fr;gap:14px}
   .qrow.q1{--q:#2f6bed} .qrow.q2{--q:#17a673} .qrow.q3{--q:#e8843a} .qrow.q4{--q:#9a5cf0} .qrow.q0{--q:#6b7280}
-  .qside{display:flex;flex-direction:column;justify-content:center;gap:2px;padding:14px 16px;border-radius:16px;background:color-mix(in srgb,var(--q) 12%,var(--surface));border:1px solid color-mix(in srgb,var(--q) 30%,var(--line))}
-  .qside-n{font-size:22px;font-weight:900;color:var(--ink);letter-spacing:-.03em;display:flex;align-items:center;gap:8px}
-  .qside-n::before{content:'';width:9px;height:9px;border-radius:50%;background:var(--q);flex:none}
+  .qside{position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;gap:2px;padding:15px 17px;border-radius:16px;background:linear-gradient(155deg,color-mix(in srgb,var(--q) 17%,var(--surface)),color-mix(in srgb,var(--q) 4%,var(--surface)));border:1px solid color-mix(in srgb,var(--q) 30%,var(--line));box-shadow:inset 0 1px 0 color-mix(in srgb,#fff 22%,transparent)}
+  .qwm{position:absolute;right:-8px;bottom:-20px;font-size:78px;font-weight:900;line-height:1;color:var(--q);opacity:.1;pointer-events:none;letter-spacing:-.05em}
+  .qside>:not(.qwm){position:relative;z-index:1}
+  .qside-n{font-size:22px;font-weight:900;color:var(--ink);letter-spacing:-.03em}
   .qside-mo{font-size:12px;color:var(--muted);font-weight:700;margin-top:1px;white-space:nowrap}
   .qside-v{margin-top:11px;display:flex;flex-direction:column;line-height:1}
   .qside-v b{font-size:32px;font-weight:900;color:var(--q);letter-spacing:-.035em;font-variant-numeric:tabular-nums}
   .qside-v b .u{font-size:17px;font-weight:800;margin-left:1px;letter-spacing:0}
   .qside-v .lb{font-size:11px;color:var(--muted);font-weight:700;margin-top:5px;letter-spacing:.02em}
   .qrow-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-  .ovc{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:17px 18px 18px;box-shadow:var(--shadow);cursor:pointer;min-height:178px;display:flex;flex-direction:column;text-align:left;overflow:hidden;transition:transform .2s cubic-bezier(.2,.7,.2,1),box-shadow .2s,border-color .2s;animation:pop .5s both}
+  .ovc{position:relative;background:linear-gradient(180deg,var(--surface),color-mix(in srgb,var(--q) 4%,var(--surface)));border:1px solid var(--line);border-radius:16px;padding:17px 18px 18px;box-shadow:var(--shadow);cursor:pointer;min-height:178px;display:flex;flex-direction:column;text-align:left;overflow:hidden;transition:transform .2s cubic-bezier(.2,.7,.2,1),box-shadow .2s,border-color .2s;animation:pop .5s both}
   .ovc::before{content:"";position:absolute;left:0;top:0;height:3px;width:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));transform:scaleX(0);transform-origin:left;transition:transform .22s}
-  .ovc:hover{transform:translateY(-8px);border-color:transparent;box-shadow:var(--shadow-lg)}
+  .ovc:hover{transform:translateY(-8px);border-color:color-mix(in srgb,var(--q) 45%,transparent);box-shadow:0 16px 38px color-mix(in srgb,var(--q) 22%,transparent),var(--shadow-lg)}
   .ovc:hover::before{transform:scaleX(1)}
   .ovc .m{font-size:23px;font-weight:900;letter-spacing:-.03em;display:flex;align-items:baseline;justify-content:space-between}
   .ovc .m .go{font-size:11px;color:var(--accent);font-weight:800;opacity:0;transform:translateX(-4px);transition:.18s}
@@ -113,13 +114,13 @@
   /* 분기별 색 구분 + 월 효과 */
   .ovc{--q:var(--accent)}
   .ovc.q1{--q:#2f6bed} .ovc.q2{--q:#17a673} .ovc.q3{--q:#e8843a} .ovc.q4{--q:#9a5cf0} .ovc.q0{--q:#6b7280}
-  .ovc::before{background:var(--q);transform:scaleX(1);opacity:.9;height:4px}
+  .ovc::before{background:linear-gradient(90deg,var(--q),color-mix(in srgb,var(--q) 28%,transparent));transform:scaleX(1);opacity:1;height:4px}
   .ovc:hover::before{opacity:1}
   .ovc::after{content:"";position:absolute;right:-30px;top:-30px;width:82px;height:82px;border-radius:50%;background:var(--q);opacity:.07;transition:opacity .2s,transform .2s}
   .ovc:hover::after{opacity:.14;transform:scale(1.25)}
   .ovc .m{align-items:center;justify-content:flex-start}
-  .ovc .m .mm{color:var(--ink);font-size:20px;font-weight:900;letter-spacing:-.02em;display:flex;align-items:center;gap:7px}
-  .ovc .m .mm::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--q);flex:none}
+  .ovc .m .mm{color:var(--ink);font-size:20px;font-weight:900;letter-spacing:-.02em}
+  .ovc .m .pk{margin-left:8px;font-size:10px;font-weight:800;color:#fff;background:var(--q);padding:3px 9px;border-radius:100px;letter-spacing:.02em;box-shadow:0 2px 8px color-mix(in srgb,var(--q) 42%,transparent);white-space:nowrap}
   .ovc .m .qtag{font-size:10.5px;font-weight:800;color:var(--q);background:color-mix(in srgb,var(--q) 15%,transparent);padding:3px 9px;border-radius:100px;margin-left:9px;letter-spacing:.02em}
   .ovc .m .go{margin-left:auto}
   /* 상세: 혼수·이사·입주 정량 */
@@ -603,6 +604,7 @@ const ANNUAL={
   iss:Math.round(ISSUES.filter(isExtIssue).reduce((a,x)=>a+x.value,0))};
 ANNUAL.total=ANNUAL.wed+ANNUAL.mov+ANNUAL.min+ANNUAL.iss;
 function monthTotal(m){return m>=1?Math.round((QT.tot[m-1]+issueMonthSum(m))*10)/10:Math.round(issueMonthSum(0)*10)/10;}
+const PEAKMO=[1,2,3,4,5,6,7,8,9,10,11,12].reduce((a,m)=>monthTotal(m)>monthTotal(a)?m:a,1);
 
 /* hero right: 연간 기대판매액 + theme */
 document.getElementById('heroRight').innerHTML=
@@ -620,14 +622,14 @@ function ovCard(mo,i){
   const q=mo===0?0:Math.ceil(mo/3);
   const wm=mo===0?'':String(mo).padStart(2,'0');
   const rev=`<div class="rev"><b class="num">${monthTotal(mo)}<span class="u">억</span></b><span class="lb">기대매출</span></div>`;
-  return `<button class="ovc q${q}" data-mo="${mo}" style="animation-delay:${i*22}ms">${wm?`<span class="wm">${wm}</span>`:''}<div class="m"><span class="mm">${mlabel(mo)}</span></div>${rev}<ul>${show}</ul><div class="cnt"><span class="cta">자세히 보기 <span class="arw">↗</span></span><span class="cnt-n">전체 ${all.length}건</span></div></button>`;
+  return `<button class="ovc q${q}" data-mo="${mo}" style="animation-delay:${i*22}ms">${wm?`<span class="wm">${wm}</span>`:''}<div class="m"><span class="mm">${mlabel(mo)}</span>${mo===PEAKMO?'<span class="pk">연중 최고</span>':''}</div>${rev}<ul>${show}</ul><div class="cnt"><span class="cta">자세히 보기 <span class="arw">↗</span></span><span class="cnt-n">전체 ${all.length}건</span></div></button>`;
 }
 function renderHome(){
   const qMeta=[[1,'1분기','1–3월',[1,2,3]],[2,'2분기','4–6월',[4,5,6]],[3,'3분기','7–9월',[7,8,9]],[4,'4분기','10–12월',[10,11,12]],[0,'상시·기간','연중 상시',[0]]];
   document.getElementById('overview').innerHTML=qMeta.map(([q,lab,mo3,ms],r)=>{
     const qtot=Math.round(ms.reduce((a,m)=>a+monthTotal(m),0)*10)/10;
     const cards=ms.map((m,j)=>ovCard(m,r*3+j)).join('');
-    return `<div class="qrow q${q}"><div class="qside"><div class="qside-n">${lab}</div><div class="qside-mo">${mo3}</div><div class="qside-v"><b>${qtot}<span class="u">억</span></b><span class="lb">기대매출</span></div></div><div class="qrow-cards">${cards}</div></div>`;
+    return `<div class="qrow q${q}"><div class="qside">${q?`<span class="qwm">${q}</span>`:''}<div class="qside-n">${lab}</div><div class="qside-mo">${mo3}</div><div class="qside-v"><b>${qtot}<span class="u">억</span></b><span class="lb">기대매출</span></div></div><div class="qrow-cards">${cards}</div></div>`;
   }).join('');
 }
 document.getElementById('overview').addEventListener('click',e=>{const c=e.target.closest('.ovc');if(c)showMonth(Number(c.dataset.mo));});
