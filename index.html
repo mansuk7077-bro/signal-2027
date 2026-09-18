@@ -54,6 +54,28 @@
   .chip.c-wed b{color:#7fb0ff} .chip.c-mov b{color:#5fe0b0} .chip.c-min b{color:#c3a2ff} .chip.c-iss b{color:#f6b26b}
   .themebtn{border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.08);color:#fff;border-radius:100px;padding:8px 13px;font-size:12px;cursor:pointer;font-family:inherit;transition:.15s}
   .themebtn:hover{background:rgba(255,255,255,.16)}
+  .nav2{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:2px var(--pad) 22px;position:relative;animation:rise .5s .18s both}
+  .navcard{text-align:left;cursor:pointer;font-family:inherit;color:#fff;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.15);border-radius:16px;padding:15px 18px 14px;transition:.18s;display:flex;flex-direction:column;gap:7px;min-height:132px}
+  .navcard .nc-arw{margin-left:auto;font-weight:900;color:#8fb6ff;transition:transform .18s}
+  .navcard.cal .nc-arw{color:#c3a2ff}
+  .navcard:hover,.navcard.active{background:rgba(255,255,255,.12);transform:translateY(-2px)}
+  .navcard.macro:hover,.navcard.macro.active{border-color:rgba(127,176,255,.65);box-shadow:0 12px 30px rgba(0,0,0,.35),0 0 0 1px rgba(127,176,255,.35)}
+  .navcard.cal:hover,.navcard.cal.active{border-color:rgba(195,162,255,.65);box-shadow:0 12px 30px rgba(0,0,0,.35),0 0 0 1px rgba(195,162,255,.35)}
+  .navcard:hover .nc-arw,.navcard.active .nc-arw{transform:translateX(4px)}
+  .nc-eye{font-size:11px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:#8fb6ff}
+  .navcard.cal .nc-eye{color:#c3a2ff}
+  .nc-title{font-size:20px;font-weight:900;letter-spacing:-.02em;display:flex;align-items:center;gap:9px;color:#fff}
+  .nc-badge{font-size:11px;font-weight:800;background:rgba(127,176,255,.28);color:#eaf1ff;padding:3px 10px;border-radius:100px;letter-spacing:.02em}
+  .nc-big{display:flex;align-items:baseline;gap:5px;margin:1px 0 1px}
+  .nc-big b{font-size:30px;font-weight:900;letter-spacing:-.03em;color:#fff;line-height:1}
+  .nc-big span{font-size:12px;color:#aeb8cf;font-weight:700}
+  .nc-stats{display:flex;gap:15px;flex-wrap:wrap}
+  .nc-stats span{display:flex;flex-direction:column;font-size:10.5px;color:#9aa6bf;font-weight:600;gap:1px}
+  .nc-stats b{font-size:16px;color:#fff;font-weight:800;letter-spacing:-.01em}
+  .nc-stats.sm b{font-size:15px}
+  .nc-foot{margin-top:auto;padding-top:5px;font-size:12.5px;color:#c7d2e6;font-weight:600;display:flex;align-items:center;gap:5px;line-height:1.4}
+  .nc-foot b{color:#fff}
+  @media (max-width:720px){.nav2{grid-template-columns:1fr;gap:11px}.navcard{min-height:0}}
   @keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
   @keyframes float{0%,100%{transform:translate(0,0)}50%{transform:translate(0,20px)}}
 
@@ -313,11 +335,12 @@
         <h1 class="hero-title">SIGNAL 2027</h1>
         <div class="hero-tag">가전 판매 신호를 먼저 읽다 · 부산 · 울산 · 경남</div>
       </div>
-      <div class="hero-right" id="heroRight"></div>
+      <button class="themebtn" id="theme">◐ 테마</button>
     </div>
+    <div class="nav2" id="nav2"></div>
   </div>
-  <section class="econ"><div class="wrap" id="econ"></div></section>
-  <section class="board"><div class="wrap">
+  <section class="econ" id="view-macro"><div class="wrap" id="econ"></div></section>
+  <section class="board" id="view-cal"><div class="wrap">
     <div class="board-head2">
       <div class="sec-eyebrow">월별 캘린더 · ISSUE &amp; DEMAND</div>
       <h2 class="sec-title">2027 이슈 · 수요 캘린더</h2>
@@ -649,14 +672,31 @@ ANNUAL.total=ANNUAL.wed+ANNUAL.mov+ANNUAL.min+ANNUAL.iss;
 function monthTotal(m){return m>=1?Math.round((QT.tot[m-1]+issueMonthSum(m))*10)/10:Math.round(issueMonthSum(0)*10)/10;}
 const PEAKMO=[1,2,3,4,5,6,7,8,9,10,11,12].reduce((a,m)=>monthTotal(m)>monthTotal(a)?m:a,1);
 
-/* hero right: 연간 기대판매액 + theme */
-document.getElementById('heroRight').innerHTML=
-  `<div class="chip tot"><b class="num">${ANNUAL.total.toLocaleString()}억</b><span>연 기대매출</span></div>`
-  +`<div class="chip c-wed"><b class="num">${ANNUAL.wed}억</b><span>혼수</span></div>`
-  +`<div class="chip c-mov"><b class="num">${ANNUAL.mov}억</b><span>이사</span></div>`
-  +`<div class="chip c-min"><b class="num">${ANNUAL.min}억</b><span>입주</span></div>`
-  +`<div class="chip c-iss"><b class="num">${ANNUAL.iss}억</b><span>이슈</span></div>`
-  +'<button class="themebtn" id="theme">◐ 테마</button>';
+/* 헤더 진입 카드(매크로/캘린더) + 본문 뷰 전환 */
+function renderNav(){
+  const macro=`<button class="navcard macro" data-view="macro">
+    <div class="nc-eye">거시 환경 · MACRO</div>
+    <div class="nc-title">2027 경기 전망 <span class="nc-badge">${ECON.stance}</span></div>
+    <div class="nc-stats"><span><b>2.0~2.2%</b>GDP</span><span><b>2.5%</b>기준금리</span><span><b>105+</b>소비심리</span><span><b>2.2%</b>물가</span></div>
+    <div class="nc-foot">가전 = <b>교체·프리미엄 중심 회복</b> · 국내 시장 +3~4% <span class="nc-arw">→</span></div></button>`;
+  const cal=`<button class="navcard cal" data-view="cal">
+    <div class="nc-eye">월별 · ISSUE &amp; DEMAND</div>
+    <div class="nc-title">이슈 · 수요 캘린더</div>
+    <div class="nc-big"><b>${ANNUAL.total.toLocaleString()}</b><span>억 · 연 기대매출</span></div>
+    <div class="nc-stats sm"><span><b>${ANNUAL.wed}억</b>혼수</span><span><b>${ANNUAL.mov}억</b>이사</span><span><b>${ANNUAL.min}억</b>입주</span><span><b>${ANNUAL.iss}억</b>이슈</span></div>
+    <div class="nc-foot"><b>${ISSUES.length}</b>개 이슈 · 최고 <b>${PEAKMO}월</b> · 4개 분기 <span class="nc-arw">→</span></div></button>`;
+  document.getElementById('nav2').innerHTML=macro+cal;
+  const n2=document.getElementById('nav2');
+  n2.addEventListener('mouseover',e=>{const c=e.target.closest('.navcard');if(c)setView(c.dataset.view);});
+  n2.addEventListener('click',e=>{const c=e.target.closest('.navcard');if(c){setView(c.dataset.view);document.getElementById(c.dataset.view==='macro'?'view-macro':'view-cal').scrollIntoView({behavior:'smooth',block:'start'});}});
+}
+let curView='cal';
+function setView(v){
+  document.getElementById('view-macro').hidden=(v!=='macro');
+  document.getElementById('view-cal').hidden=(v!=='cal');
+  document.querySelectorAll('.navcard').forEach(c=>c.classList.toggle('active',c.dataset.view===v));
+  curView=v;
+}
 
 const ECON={
  stance:"중립긍정",
@@ -789,5 +829,5 @@ document.getElementById('back').addEventListener('click',showHome);
 const root=document.documentElement;
 document.getElementById('theme').addEventListener('click',()=>{const cur=root.getAttribute('data-theme')||'light';root.setAttribute('data-theme',cur==='dark'?'light':'dark');});
 
-renderEcon();renderHome();showHome();
+renderEcon();renderHome();renderNav();setView('cal');showHome();
 </script>
