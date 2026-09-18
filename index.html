@@ -54,7 +54,7 @@
   .chip.c-wed b{color:#7fb0ff} .chip.c-mov b{color:#5fe0b0} .chip.c-min b{color:#c3a2ff} .chip.c-iss b{color:#f6b26b}
   .themebtn{border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.08);color:#fff;border-radius:100px;padding:8px 13px;font-size:12px;cursor:pointer;font-family:inherit;transition:.15s}
   .themebtn:hover{background:rgba(255,255,255,.16)}
-  .nav2{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:2px var(--pad) 22px;position:relative;animation:rise .5s .18s both}
+  .nav2{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:2px var(--pad) 12px;position:relative;animation:rise .5s .18s both}
   .navcard{text-align:left;cursor:pointer;font-family:inherit;color:#fff;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.15);border-radius:16px;padding:15px 18px 14px;transition:.18s;display:flex;flex-direction:column;gap:7px;min-height:132px}
   .navcard .nc-arw{margin-left:auto;font-weight:900;color:#8fb6ff;transition:transform .18s}
   .navcard.cal .nc-arw{color:#c3a2ff}
@@ -75,7 +75,14 @@
   .nc-stats.sm b{font-size:15px}
   .nc-foot{margin-top:auto;padding-top:5px;font-size:12.5px;color:#c7d2e6;font-weight:600;display:flex;align-items:center;gap:5px;line-height:1.4}
   .nc-foot b{color:#fff}
-  @media (max-width:720px){.nav2{grid-template-columns:1fr;gap:11px}.navcard{min-height:0}}
+  .navcard{position:relative}
+  .nc-now{display:none;position:absolute;top:13px;right:15px;font-size:10.5px;font-weight:800;color:#0b0b10;background:#fff;padding:3px 10px;border-radius:100px;letter-spacing:.02em;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+  .navcard.active .nc-now{display:inline-block}
+  .navcard.active::after{content:'';position:absolute;left:50%;bottom:-9px;transform:translateX(-50%);border:8px solid transparent;border-top-color:#7fb0ff}
+  .navcard.cal.active::after{border-top-color:#c3a2ff}
+  .nav-hint{margin:2px var(--pad) 20px;padding:9px 15px;border-radius:100px;background:rgba(255,255,255,.06);border:1px dashed rgba(255,255,255,.22);color:#c7d2e6;font-size:12.5px;font-weight:600;text-align:center;animation:rise .5s .22s both}
+  .nav-hint b{color:#fff} .nav-hint .nh-cur{color:#8fb6ff}
+  @media (max-width:720px){.nav2{grid-template-columns:1fr;gap:11px}.navcard{min-height:0}.navcard.active::after{display:none}}
   @keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
   @keyframes float{0%,100%{transform:translate(0,0)}50%{transform:translate(0,20px)}}
 
@@ -300,12 +307,15 @@
   .ectip{position:absolute;top:calc(100% + 8px);left:0;right:0;z-index:40;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 13px;box-shadow:var(--shadow-lg);opacity:0;visibility:hidden;transform:translateY(-4px);transition:.16s;text-align:left}
   .ecard:hover .ectip,.ecard:focus .ectip,.ecard:focus-within .ectip{opacity:1;visibility:visible;transform:none}
   .ect-def{font-size:12.5px;line-height:1.6;color:var(--ink);font-weight:500}
-  .ec3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:11px 0 9px}
-  .ec3-i{background:var(--bg-soft);border:1px solid var(--line);border-radius:9px;padding:8px 4px;text-align:center}
-  .ec3-i span{display:block;font-size:10px;color:var(--muted);font-weight:700;margin-bottom:3px}
-  .ec3-i b{font-size:14px;color:var(--ink);font-weight:800;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
-  .ec3-i.cur{background:color-mix(in srgb,var(--accent) 13%,var(--surface));border-color:color-mix(in srgb,var(--accent) 38%,var(--line))}
-  .ec3-i.cur b,.ec3-i.cur span{color:var(--accent)}
+  .ec3-t{font-size:11px;font-weight:800;color:var(--muted);margin:11px 0 8px;letter-spacing:.03em}
+  .ec3{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:0 0 10px;align-items:end}
+  .ec3-i{text-align:center}
+  .ec3-bar{height:46px;display:flex;align-items:flex-end;justify-content:center;margin-bottom:6px}
+  .ec3-bar i{display:block;width:62%;max-width:32px;min-height:4px;background:color-mix(in srgb,var(--accent) 32%,var(--line));border-radius:5px 5px 0 0;transition:height .25s}
+  .ec3-i.cur .ec3-bar i{background:var(--accent)}
+  .ec3-i b{display:block;font-size:12.5px;font-weight:800;color:var(--ink);letter-spacing:-.01em;font-variant-numeric:tabular-nums;line-height:1.1}
+  .ec3-i.cur b{color:var(--accent)}
+  .ec3-i span{display:block;font-size:9.5px;color:var(--muted);font-weight:700;margin-top:3px}
   .ect-tr{font-size:11.5px;line-height:1.55;color:var(--muted);font-weight:500}
   .ec-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
   .ec-lb{font-size:13.5px;font-weight:700;color:var(--muted)}
@@ -353,6 +363,7 @@
       <button class="themebtn" id="theme">◐ 테마</button>
     </div>
     <div class="nav2" id="nav2"></div>
+    <div class="nav-hint" id="navHint"></div>
   </div>
   <section class="econ" id="view-macro"><div class="wrap" id="econ"></div></section>
   <section class="board" id="view-cal"><div class="wrap">
@@ -689,12 +700,12 @@ const PEAKMO=[1,2,3,4,5,6,7,8,9,10,11,12].reduce((a,m)=>monthTotal(m)>monthTotal
 
 /* 헤더 진입 카드(매크로/캘린더) + 본문 뷰 전환 */
 function renderNav(){
-  const macro=`<button class="navcard macro" data-view="macro">
+  const macro=`<button class="navcard macro" data-view="macro"><span class="nc-now">● 지금 보는 중</span>
     <div class="nc-eye">거시 환경 · MACRO</div>
     <div class="nc-title">2027 경기 전망 <span class="nc-badge">${ECON.stance}</span></div>
     <div class="nc-stats"><span><b>2.0~2.2%</b>GDP</span><span><b>2.5%</b>기준금리</span><span><b>105+</b>소비심리</span><span><b>2.2%</b>물가</span></div>
     <div class="nc-foot">가전 = <b>교체·프리미엄 중심 회복</b> · 국내 시장 +3~4% <span class="nc-arw">→</span></div></button>`;
-  const cal=`<button class="navcard cal" data-view="cal">
+  const cal=`<button class="navcard cal" data-view="cal"><span class="nc-now">● 지금 보는 중</span>
     <div class="nc-eye">월별 · ISSUE &amp; DEMAND</div>
     <div class="nc-title">이슈 · 수요 캘린더</div>
     <div class="nc-big"><b>${ANNUAL.total.toLocaleString()}</b><span>억 · 연 기대매출</span></div>
@@ -710,6 +721,9 @@ function setView(v){
   document.getElementById('view-macro').hidden=(v!=='macro');
   document.getElementById('view-cal').hidden=(v!=='cal');
   document.querySelectorAll('.navcard').forEach(c=>c.classList.toggle('active',c.dataset.view===v));
+  const nm=v==='macro'?'거시 환경 (경기 전망)':'이슈 · 수요 캘린더';
+  const h=document.getElementById('navHint');
+  if(h) h.innerHTML=`위 카드를 <b>클릭</b>하면 아래 내용이 바뀝니다 · 지금 보는 화면 → <b class="nh-cur">${nm}</b>`;
   curView=v;
 }
 
@@ -764,10 +778,15 @@ const ECOND={
   {def:"실질소득·성과급 = 물가를 뺀 실제 벌이와 대기업 성과급 수준. 프리미엄 가전을 살 수 있는 '구매력의 바탕'.",y:["완만↑","개선","개선(편중)"],tr:"2026~27 반도체·수출 대기업 중심으로 개선, 다만 업종 편중으로 소비 양극화 병행 [추정]."}
  ]
 };
+const ECONBARS=[[1.0,3.2,2.2],[2.5,2.5,2.5],[2.1,2.0,2.2],[2.3,2.0,2.0],[108,106,106],[1422,1400,1350],[3.0,2.45,1.8],[2,3,3]];
+function bars3(idx){const bs=ECONBARS[idx],mn=Math.min(...bs),mx=Math.max(...bs);
+  return bs.map(v=>mx===mn?68:Math.round((0.32+0.68*(v-mn)/(mx-mn))*100));}
 function renderEcon(){
   const e=ECON, A={up:['▲','up'],down:['▼','down'],flat:['→','flat']};
   const inds=e.indicators.map((i,idx)=>{const[a,c]=A[i.dir]||A.flat;const D=ECOND.d[idx];
-    const tip=`<div class="ectip"><div class="ect-def">${D.def}</div><div class="ec3"><div class="ec3-i"><span>2025</span><b>${D.y[0]}</b></div><div class="ec3-i"><span>2026</span><b>${D.y[1]}</b></div><div class="ec3-i cur"><span>2027</span><b>${D.y[2]}</b></div></div><div class="ect-tr">${D.tr}</div></div>`;
+    const H=bars3(idx);
+    const bars=D.y.map((v,k)=>`<div class="ec3-i ${k===2?'cur':''}"><div class="ec3-bar"><i style="height:${H[k]}%"></i></div><b>${v}</b><span>${2025+k}</span></div>`).join('');
+    const tip=`<div class="ectip"><div class="ect-def">${D.def}</div><div class="ec3-t">최근 3개년 추이</div><div class="ec3">${bars}</div><div class="ect-tr">${D.tr}</div></div>`;
     return `<div class="ecard" tabindex="0"><div class="ec-top"><span class="ec-lb">${i.label} <span class="ec-i">ⓘ</span></span><span class="ec-dir ${c}">${a}</span></div><div class="ec-val">${i.value}</div><div class="ec-note">${i.note}</div>${tip}</div>`;}).join('');
   const li=arr=>arr.map(x=>`<li>${x}</li>`).join('');
   document.getElementById('econ').innerHTML=`
@@ -861,5 +880,5 @@ document.getElementById('back').addEventListener('click',showHome);
 const root=document.documentElement;
 document.getElementById('theme').addEventListener('click',()=>{const cur=root.getAttribute('data-theme')||'light';root.setAttribute('data-theme',cur==='dark'?'light':'dark');});
 
-renderEcon();renderHome();renderNav();setView('cal');showHome();
+renderEcon();renderHome();renderNav();setView('macro');showHome();
 </script>
