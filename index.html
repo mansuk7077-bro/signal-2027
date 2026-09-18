@@ -301,10 +301,15 @@
   .econ-explain b{color:var(--accent)} .econ-explain>b:first-child{display:block;margin-bottom:4px;font-size:14px}
   .ec-hint{font-size:12.5px;color:var(--muted);font-weight:600;margin:0 0 14px} .ec-hint b{color:var(--ink)}
   .ecards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:0 0 18px}
-  .ecard{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow);cursor:help;transition:border-color .15s,box-shadow .15s}
-  .ecard:hover,.ecard:focus,.ecard:focus-within{border-color:color-mix(in srgb,var(--accent) 45%,var(--line));box-shadow:var(--shadow-lg);outline:none}
+  .ecard{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow);cursor:help;transition:transform .16s,box-shadow .16s,border-color .16s,opacity .16s}
+  .ecards:hover .ecard:not(:hover){opacity:.38}
+  .ecards:has(.ecard:focus-within) .ecard:not(:focus-within){opacity:.38}
+  .ecard:hover,.ecard:focus,.ecard:focus-within{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent),0 16px 38px color-mix(in srgb,var(--accent) 28%,transparent);transform:translateY(-4px);outline:none;z-index:41;opacity:1}
+  .ecard:hover .ec-i,.ecard:focus-within .ec-i{color:var(--accent)}
+  .ecard:hover .ec-lb,.ecard:focus-within .ec-lb{color:var(--accent)}
   .ec-i{font-size:11px;color:var(--faint);font-weight:800}
-  .ectip{position:absolute;top:calc(100% + 8px);left:0;right:0;z-index:40;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 13px;box-shadow:var(--shadow-lg);opacity:0;visibility:hidden;transform:translateY(-4px);transition:.16s;text-align:left}
+  .ectip{position:absolute;top:calc(100% + 9px);left:0;right:0;z-index:42;background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:12px;padding:13px 14px;box-shadow:0 18px 46px color-mix(in srgb,var(--accent) 20%,rgba(10,20,40,.28));opacity:0;visibility:hidden;transform:translateY(-4px);transition:.16s;text-align:left}
+  .ectip::before{content:'';position:absolute;top:-8px;left:22px;border:7px solid transparent;border-bottom-color:var(--accent)}
   .ecard:hover .ectip,.ecard:focus .ectip,.ecard:focus-within .ectip{opacity:1;visibility:visible;transform:none}
   .ect-def{font-size:12.5px;line-height:1.6;color:var(--ink);font-weight:500}
   .ec3-t{font-size:11px;font-weight:800;color:var(--muted);margin:11px 0 8px;letter-spacing:.03em}
@@ -738,6 +743,8 @@ const ECON={
   {label:"소비자심리(CCSI)",value:"105~107",dir:"up",note:"기준선(100) 웃도는 낙관, 연속 개선세 (한국은행 2026.5~7)"},
   {label:"원/달러 환율",value:"1,300~1,350",dir:"down",note:"하향 안정 시 수입 프리미엄 가전 원가 부담 완화 [추정]"},
   {label:"부울경 입주물량",value:"감소~보합",dir:"down",note:"경남 급감·울산 소폭↓·부산 소폭↑. 신규 이사수요 둔화, 신축 희소성은 교체수요 자극"},
+  {label:"부울경 혼인건수",value:"약 2.98만건",dir:"flat",note:"2024~25 반등 후 2027 소폭 둔화(플래토). 혼수 가전 수요의 모집단 [추정]"},
+  {label:"부울경 이사·이동",value:"약 45만건",dir:"down",note:"인구 순유출·1인가구화로 완만 감소, 봄·가을 성수기 집중 [추정]"},
   {label:"실질소득·성과급",value:"개선(편중)",dir:"up",note:"반도체·수출 대기업 중심 임금·성과급 개선이 프리미엄 구매력 지지 [추정]"}
  ],
  appliance:{
@@ -775,12 +782,15 @@ const ECOND={
   {def:"소비자심리지수(CCSI) = 100보다 크면 소비자가 경기를 낙관, 작으면 비관. 소비 의향을 미리 읽는 심리 온도계.",y:["100↑","106","106"],tr:"2025 100 상회 회복 → 2026~27 105~107로 기준선 웃도는 낙관 유지 [추정]."},
   {def:"원/달러 환율 = 1달러를 사는 데 필요한 원화 금액. 높을수록(원화 약세) 수입 프리미엄 가전 원가 부담↑.",y:["1,422","1,400","1,350"],tr:"2025 고점(1,420원대) → 2026 소폭 하향 → 2027 1,350원대 안정화 [추정]."},
   {def:"부울경 입주물량 = 부산·울산·경남에서 그 해 새 아파트에 실제 입주하는 가구 수. 많을수록 이사·신규 가전 세트 수요↑.",y:["~3.0만","2.3~2.6만","감소"],tr:"2027 경남 급감·울산 축소로 전반 감소 → 신규 이사수요 둔화(신축 희소성은 교체수요 자극)."},
+  {def:"부울경 혼인건수 = 그 해 부산·울산·경남에서 이뤄진 혼인신고 수. 혼수 가전(냉장고·세탁·TV 패키지) 수요의 모집단.",y:["3.0만","3.0만","2.98만"],tr:"2024~25 두 자릿수 반등 → 2026 정점 → 2027 소폭 둔화(2024 수준 회귀) [추정]."},
+  {def:"부울경 이사(주민 이동)건수 = 그 해 부·울·경에서 발생한 거주지 이동. 이사 시 가전 교체수요의 모집단.",y:["47만","46만","45만"],tr:"인구감소·수도권 순유출로 완만 감소, 봄(2~3월)·가을 이사철에 집중 [추정]."},
   {def:"실질소득·성과급 = 물가를 뺀 실제 벌이와 대기업 성과급 수준. 프리미엄 가전을 살 수 있는 '구매력의 바탕'.",y:["완만↑","개선","개선(편중)"],tr:"2026~27 반도체·수출 대기업 중심으로 개선, 다만 업종 편중으로 소비 양극화 병행 [추정]."}
  ]
 };
-const ECONBARS=[[1.0,3.2,2.2],[2.5,2.5,2.5],[2.1,2.0,2.2],[2.3,2.0,2.0],[108,106,106],[1422,1400,1350],[3.0,2.45,1.8],[2,3,3]];
+const ECONBARS=[[1.0,3.2,2.2],[2.5,2.5,2.5],[2.1,2.0,2.2],[2.3,2.0,2.0],[108,106,106],[1422,1400,1350],[3.0,2.45,1.8],[3.0,3.0,2.98],[47,46,45],[2,3,3]];
 function bars3(idx){const bs=ECONBARS[idx],mn=Math.min(...bs),mx=Math.max(...bs);
-  return bs.map(v=>mx===mn?68:Math.round((0.32+0.68*(v-mn)/(mx-mn))*100));}
+  if(mx===mn||(mx-mn)/mx<0.035) return bs.map(_=>78);
+  return bs.map(v=>Math.round((0.34+0.66*(v-mn)/(mx-mn))*100));}
 function renderEcon(){
   const e=ECON, A={up:['▲','up'],down:['▼','down'],flat:['→','flat']};
   const inds=e.indicators.map((i,idx)=>{const[a,c]=A[i.dir]||A.flat;const D=ECOND.d[idx];
