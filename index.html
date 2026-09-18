@@ -32,21 +32,22 @@
   .eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
 
   /* SLIM HERO (colored band, no nav) */
-  .hero{position:relative;overflow:hidden;background:#05060c;color:#fff;isolation:isolate}
+  .hero{position:relative;overflow:hidden;background:#182a5e;color:#fff;isolation:isolate}
   .hero-bg{position:absolute;inset:0;z-index:-2;background:
-      radial-gradient(900px 260px at 82% -40%, #1a3f80 0%, transparent 62%),
-      radial-gradient(760px 240px at 6% -30%, #3f2076 0%, transparent 58%),
-      linear-gradient(180deg,#0b1330 0%, #06070f 100%)}
-  .hero-grid{position:absolute;inset:0;z-index:-2;opacity:.14;background-image:linear-gradient(color-mix(in srgb,#7fb0ff 60%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,#7fb0ff 60%,transparent) 1px,transparent 1px);background-size:52px 52px;mask-image:radial-gradient(120% 140% at 50% -20%,#000 45%,transparent 82%)}
-  .orb{position:absolute;border-radius:50%;filter:blur(42px);z-index:-1;opacity:.5;animation:float 13s ease-in-out infinite}
-  .orb.a{width:240px;height:240px;background:#1f6bff;top:-140px;right:10%}
-  .orb.b{width:200px;height:200px;background:#7b3bff;top:-150px;left:6%;animation-delay:-5s}
+      radial-gradient(1050px 340px at 80% -28%, #4f8bff 0%, transparent 60%),
+      radial-gradient(880px 320px at 4% -18%, #9b5cff 0%, transparent 58%),
+      radial-gradient(700px 300px at 100% 120%, #2a7fff 0%, transparent 55%),
+      linear-gradient(155deg,#233a86 0%, #2e2a86 46%, #1b2f6e 100%)}
+  .hero-grid{position:absolute;inset:0;z-index:-2;opacity:.18;background-image:linear-gradient(color-mix(in srgb,#bcd4ff 60%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,#bcd4ff 60%,transparent) 1px,transparent 1px);background-size:52px 52px;mask-image:radial-gradient(130% 150% at 50% -10%,#000 50%,transparent 85%)}
+  .orb{position:absolute;border-radius:50%;filter:blur(46px);z-index:-1;opacity:.6;animation:float 13s ease-in-out infinite}
+  .orb.a{width:260px;height:260px;background:#4f9bff;top:-140px;right:8%}
+  .orb.b{width:220px;height:220px;background:#a06bff;top:-150px;left:5%;animation-delay:-5s}
   .hero-inner{position:relative;display:flex;align-items:center;justify-content:space-between;gap:18px 26px;flex-wrap:wrap;padding:16px var(--pad) 18px}
-  .hero-left{display:flex;flex-direction:row;align-items:baseline;flex-wrap:wrap;gap:6px 13px;min-width:0}
+  .hero-left{display:flex;flex-direction:row;align-items:center;flex-wrap:wrap;gap:8px 14px;min-width:0}
   .hero-eyebrow{color:#8fb6ff;font-size:10.5px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;animation:rise .5s .02s both}
   .hero-title{font-size:clamp(22px,2.6vw,31px);font-weight:900;letter-spacing:-.03em;line-height:1;
     background:linear-gradient(180deg,#fff 35%,#c3d6ff);-webkit-background-clip:text;background-clip:text;color:transparent;animation:rise .5s .08s both}
-  .hero-tag{color:#aebbd6;font-size:14px;font-weight:600;margin:0;letter-spacing:.01em;animation:rise .5s .14s both}
+  .hero-tag{color:#e6eeff;font-size:13.5px;font-weight:600;margin:0;letter-spacing:.01em;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.24);padding:6px 14px;border-radius:100px;backdrop-filter:blur(4px);animation:rise .5s .14s both}
   .hero-right{display:flex;align-items:center;gap:9px;flex-wrap:wrap;animation:rise .5s .16s both}
   .chip{display:flex;align-items:baseline;gap:6px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:100px;padding:7px 13px}
   .chip b{font-size:15px;font-weight:900;color:#fff} .chip span{font-size:10.5px;color:#aeb8cf;font-weight:600}
@@ -55,10 +56,23 @@
   .themebtn{border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.08);color:#fff;border-radius:100px;padding:8px 13px;font-size:12px;cursor:pointer;font-family:inherit;transition:.15s}
   .themebtn:hover{background:rgba(255,255,255,.16)}
   .nav2{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:2px var(--pad) 12px;position:relative;animation:rise .5s .18s both}
-  .navcard{text-align:left;cursor:pointer;font-family:inherit;color:#fff;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.15);border-radius:16px;padding:15px 18px 14px;transition:.18s;display:flex;flex-direction:column;gap:7px;min-height:132px}
+  .navcard{text-align:left;cursor:pointer;font-family:inherit;color:#fff;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-radius:18px;padding:17px 19px 15px;transition:.18s;display:flex;flex-direction:column;gap:13px;min-height:158px}
+  .navcard.macro{background:linear-gradient(150deg,rgba(79,139,255,.22),rgba(255,255,255,.03) 70%)}
+  .navcard.cal{background:linear-gradient(150deg,rgba(160,107,255,.22),rgba(255,255,255,.03) 70%)}
+  .nc-top{display:flex;align-items:center;gap:13px}
+  .nc-ic{flex:none;width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:23px;border:1px solid rgba(255,255,255,.2)}
+  .navcard.macro .nc-ic{background:linear-gradient(150deg,rgba(79,139,255,.55),rgba(79,139,255,.15))}
+  .navcard.cal .nc-ic{background:linear-gradient(150deg,rgba(160,107,255,.55),rgba(160,107,255,.15))}
+  .nc-head{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+  .nc-top .nc-big{display:block;flex:none;text-align:right;line-height:1;margin:0}
+  .nc-top .nc-big b{font-size:31px;font-weight:900;letter-spacing:-.03em;color:#fff}
+  .nc-top .nc-big .u{font-size:15px;font-weight:800;color:#dbe6ff;margin-left:1px}
+  .nc-top .nc-big small{display:block;font-size:10.5px;color:#b9c4dd;font-weight:700;margin-top:4px}
   .navcard .nc-arw{margin-left:auto;font-weight:900;color:#8fb6ff;transition:transform .18s}
   .navcard.cal .nc-arw{color:#c3a2ff}
-  .navcard:hover,.navcard.active{background:rgba(255,255,255,.12);transform:translateY(-2px)}
+  .navcard:hover,.navcard.active{transform:translateY(-3px)}
+  .navcard.macro:hover,.navcard.macro.active{background:linear-gradient(150deg,rgba(79,139,255,.40),rgba(255,255,255,.06) 72%)}
+  .navcard.cal:hover,.navcard.cal.active{background:linear-gradient(150deg,rgba(160,107,255,.40),rgba(255,255,255,.06) 72%)}
   .navcard.macro:hover,.navcard.macro.active{border-color:rgba(127,176,255,.65);box-shadow:0 12px 30px rgba(0,0,0,.35),0 0 0 1px rgba(127,176,255,.35)}
   .navcard.cal:hover,.navcard.cal.active{border-color:rgba(195,162,255,.65);box-shadow:0 12px 30px rgba(0,0,0,.35),0 0 0 1px rgba(195,162,255,.35)}
   .navcard:hover .nc-arw,.navcard.active .nc-arw{transform:translateX(4px)}
@@ -706,14 +720,11 @@ const PEAKMO=[1,2,3,4,5,6,7,8,9,10,11,12].reduce((a,m)=>monthTotal(m)>monthTotal
 /* 헤더 진입 카드(매크로/캘린더) + 본문 뷰 전환 */
 function renderNav(){
   const macro=`<button class="navcard macro" data-view="macro"><span class="nc-now">● 지금 보는 중</span>
-    <div class="nc-eye">거시 환경 · MACRO</div>
-    <div class="nc-title">2027 경기 전망 <span class="nc-badge">${ECON.stance}</span></div>
+    <div class="nc-top"><span class="nc-ic">📈</span><div class="nc-head"><div class="nc-eye">거시 환경 · MACRO</div><div class="nc-title">2027 경기 전망 <span class="nc-badge">${ECON.stance}</span></div></div></div>
     <div class="nc-stats"><span><b>2.0~2.2%</b>GDP</span><span><b>2.5%</b>기준금리</span><span><b>105+</b>소비심리</span><span><b>2.2%</b>물가</span></div>
-    <div class="nc-foot">가전 = <b>교체·프리미엄 중심 회복</b> · 국내 시장 +3~4% <span class="nc-arw">→</span></div></button>`;
+    <div class="nc-foot">가전 = <b>교체·프리미엄 회복</b> · 국내 시장 +3~4% <span class="nc-arw">→</span></div></button>`;
   const cal=`<button class="navcard cal" data-view="cal"><span class="nc-now">● 지금 보는 중</span>
-    <div class="nc-eye">월별 · ISSUE &amp; DEMAND</div>
-    <div class="nc-title">이슈 · 수요 캘린더</div>
-    <div class="nc-big"><b>${ANNUAL.total.toLocaleString()}</b><span>억 · 연 기대매출</span></div>
+    <div class="nc-top"><span class="nc-ic">📅</span><div class="nc-head"><div class="nc-eye">월별 · ISSUE &amp; DEMAND</div><div class="nc-title">이슈 · 수요 캘린더</div></div><div class="nc-big"><b>${ANNUAL.total.toLocaleString()}</b><span class="u">억</span><small>연 기대매출</small></div></div>
     <div class="nc-stats sm"><span><b>${ANNUAL.wed}억</b>혼수</span><span><b>${ANNUAL.mov}억</b>이사</span><span><b>${ANNUAL.min}억</b>입주</span><span><b>${ANNUAL.iss}억</b>이슈</span></div>
     <div class="nc-foot"><b>${ISSUES.length}</b>개 이슈 · 최고 <b>${PEAKMO}월</b> · 4개 분기 <span class="nc-arw">→</span></div></button>`;
   document.getElementById('nav2').innerHTML=macro+cal;
