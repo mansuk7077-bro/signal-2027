@@ -290,8 +290,23 @@
   .econ-ht .stance{font-size:13px;font-weight:800;color:#fff;background:var(--accent);padding:5px 13px;border-radius:100px;letter-spacing:.02em}
   .econ-ht p{margin:12px 0 0;color:var(--muted);font-size:15.5px;font-weight:600;line-height:1.7;max-width:940px}
   .econ-ht p b{color:var(--ink)}
-  .ecards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:19px 0 18px}
-  .ecard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow)}
+  .econ-explain{margin:15px 0 10px;background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 25%,var(--line));border-left:4px solid var(--accent);border-radius:12px;padding:13px 16px;font-size:14.5px;line-height:1.7;color:var(--ink);font-weight:500;max-width:960px}
+  .econ-explain b{color:var(--accent)} .econ-explain>b:first-child{display:block;margin-bottom:4px;font-size:14px}
+  .ec-hint{font-size:12.5px;color:var(--muted);font-weight:600;margin:0 0 14px} .ec-hint b{color:var(--ink)}
+  .ecards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:0 0 18px}
+  .ecard{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow);cursor:help;transition:border-color .15s,box-shadow .15s}
+  .ecard:hover,.ecard:focus,.ecard:focus-within{border-color:color-mix(in srgb,var(--accent) 45%,var(--line));box-shadow:var(--shadow-lg);outline:none}
+  .ec-i{font-size:11px;color:var(--faint);font-weight:800}
+  .ectip{position:absolute;top:calc(100% + 8px);left:0;right:0;z-index:40;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 13px;box-shadow:var(--shadow-lg);opacity:0;visibility:hidden;transform:translateY(-4px);transition:.16s;text-align:left}
+  .ecard:hover .ectip,.ecard:focus .ectip,.ecard:focus-within .ectip{opacity:1;visibility:visible;transform:none}
+  .ect-def{font-size:12.5px;line-height:1.6;color:var(--ink);font-weight:500}
+  .ec3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:11px 0 9px}
+  .ec3-i{background:var(--bg-soft);border:1px solid var(--line);border-radius:9px;padding:8px 4px;text-align:center}
+  .ec3-i span{display:block;font-size:10px;color:var(--muted);font-weight:700;margin-bottom:3px}
+  .ec3-i b{font-size:14px;color:var(--ink);font-weight:800;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+  .ec3-i.cur{background:color-mix(in srgb,var(--accent) 13%,var(--surface));border-color:color-mix(in srgb,var(--accent) 38%,var(--line))}
+  .ec3-i.cur b,.ec3-i.cur span{color:var(--accent)}
+  .ect-tr{font-size:11.5px;line-height:1.55;color:var(--muted);font-weight:500}
   .ec-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
   .ec-lb{font-size:13.5px;font-weight:700;color:var(--muted)}
   .ec-dir{font-size:16px;font-weight:900;line-height:1}
@@ -736,13 +751,30 @@ const ECON={
  },
  src:"출처: KDI 경제전망·한국은행 통화신용정책보고서/소비자동향조사·OECD·Mordor Intelligence·KB부동산·전자신문 등 (2026~27 전망, 금리·환율·성과급은 [추정])"
 };
+const ECOND={
+ phrase:"작년(2026년)에 성장률 숫자가 유난히 높았던 건 <b>반도체 초호황</b>이라는 반짝 특수 덕분입니다. 2027년 숫자가 낮아 보이는 건 경기가 나빠져서가 아니라, 잠깐 시속 200km로 달리던 차가 <b>정상 주행속도(2%대)</b>로 되돌아오는 것에 가깝습니다. 오히려 <b>물가는 2%대 초반으로 안정되고, 금리는 낮게 유지되며, 소비심리는 기준선(100)을 웃도는</b> 등 실제 살림살이 체감은 더 좋아지는 국면입니다. 가전 관점에선 폭발적 신규 수요보다 <b>AI가전·프리미엄 교체수요</b>가 꾸준히 시장을 끄는 '조용하지만 나쁘지 않은' 한 해입니다.",
+ d:[
+  {def:"실질 GDP 성장률 = 1년간 나라가 새로 만든 생산(부가가치)이 물가효과를 뺀 실질 기준으로 전년보다 얼마나 늘었는지 — 경제의 '주행속도'.",y:["1.0%","3.2%","2.2%"],tr:"2025 저성장 → 2026 반도체 특수로 급반등 → 2027 정상화(잠재성장률 수준). 전년비 둔화지만 침체 아님."},
+  {def:"기준금리 = 한국은행이 정하는 정책금리로 대출이자·예금이자의 출발점. 낮을수록 이자부담↓·구매 여력↑.",y:["2.50%","2.50%","2.25~2.75%"],tr:"2025 인하 마무리 → 2026 8회 연속 동결 → 2027 동결~소폭 조정 [추정]."},
+  {def:"소비자물가(CPI) = 우리가 사는 물건·서비스 값이 1년 전보다 평균 몇 % 올랐는지. 낮을수록 지갑 부담↓·실질구매력↑.",y:["2.1%","2.0%","2.2%"],tr:"2%대 초반에서 안정 관리, 2027 물가안정목표(2%)에 근접."},
+  {def:"민간소비 증가율 = 가계가 실제로 쓴 돈(소비지출)이 전년보다 얼마나 늘었는지. 가전 등 내구재 수요와 가장 직접 연결.",y:["2.3%","2.0%","~2.0%"],tr:"2%대 중반 → 2% 안팎 완만 개선(온기가 반도체에 편중돼 강도는 제한적)."},
+  {def:"소비자심리지수(CCSI) = 100보다 크면 소비자가 경기를 낙관, 작으면 비관. 소비 의향을 미리 읽는 심리 온도계.",y:["100↑","106","106"],tr:"2025 100 상회 회복 → 2026~27 105~107로 기준선 웃도는 낙관 유지 [추정]."},
+  {def:"원/달러 환율 = 1달러를 사는 데 필요한 원화 금액. 높을수록(원화 약세) 수입 프리미엄 가전 원가 부담↑.",y:["1,422","1,400","1,350"],tr:"2025 고점(1,420원대) → 2026 소폭 하향 → 2027 1,350원대 안정화 [추정]."},
+  {def:"부울경 입주물량 = 부산·울산·경남에서 그 해 새 아파트에 실제 입주하는 가구 수. 많을수록 이사·신규 가전 세트 수요↑.",y:["~3.0만","2.3~2.6만","감소"],tr:"2027 경남 급감·울산 축소로 전반 감소 → 신규 이사수요 둔화(신축 희소성은 교체수요 자극)."},
+  {def:"실질소득·성과급 = 물가를 뺀 실제 벌이와 대기업 성과급 수준. 프리미엄 가전을 살 수 있는 '구매력의 바탕'.",y:["완만↑","개선","개선(편중)"],tr:"2026~27 반도체·수출 대기업 중심으로 개선, 다만 업종 편중으로 소비 양극화 병행 [추정]."}
+ ]
+};
 function renderEcon(){
   const e=ECON, A={up:['▲','up'],down:['▼','down'],flat:['→','flat']};
-  const inds=e.indicators.map(i=>{const[a,c]=A[i.dir]||A.flat;return `<div class="ecard"><div class="ec-top"><span class="ec-lb">${i.label}</span><span class="ec-dir ${c}">${a}</span></div><div class="ec-val">${i.value}</div><div class="ec-note">${i.note}</div></div>`;}).join('');
+  const inds=e.indicators.map((i,idx)=>{const[a,c]=A[i.dir]||A.flat;const D=ECOND.d[idx];
+    const tip=`<div class="ectip"><div class="ect-def">${D.def}</div><div class="ec3"><div class="ec3-i"><span>2025</span><b>${D.y[0]}</b></div><div class="ec3-i"><span>2026</span><b>${D.y[1]}</b></div><div class="ec3-i cur"><span>2027</span><b>${D.y[2]}</b></div></div><div class="ect-tr">${D.tr}</div></div>`;
+    return `<div class="ecard" tabindex="0"><div class="ec-top"><span class="ec-lb">${i.label} <span class="ec-i">ⓘ</span></span><span class="ec-dir ${c}">${a}</span></div><div class="ec-val">${i.value}</div><div class="ec-note">${i.note}</div>${tip}</div>`;}).join('');
   const li=arr=>arr.map(x=>`<li>${x}</li>`).join('');
   document.getElementById('econ').innerHTML=`
     <div class="sec-eyebrow">거시 환경 · MACRO OUTLOOK</div>
     <div class="econ-ht"><h2>2027 경기 전망<span class="stance">${e.stance}</span></h2><p>${e.summary.join('<br>')}</p></div>
+    <div class="econ-explain"><b>💡 '완만한 회복형 감속'이란?</b> ${ECOND.phrase}</div>
+    <div class="ec-hint">각 지표 카드에 마우스를 올리면(모바일은 탭) <b>지표 뜻 + 최근 3개년(2025→27)</b> 비교가 열립니다.</div>
     <div class="ecards">${inds}</div>
     <div class="econ-appl">
       <div class="ea-head"><b>경기 전망 → 가전 소비·업계 예측</b><span class="ea-growth">국내 가전 시장 ${e.appliance.growth}</span></div>
